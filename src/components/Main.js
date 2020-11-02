@@ -1,9 +1,10 @@
 import React from "react"
+import TableData from "./main/TableData"
 
 const Main = (props) =>{
     return(
-        <main>
-            Main
+        <main className={"Main"}>
+            <TableData/>
         </main>
     )
 }

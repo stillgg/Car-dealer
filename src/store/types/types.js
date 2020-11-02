@@ -1,1 +1,1 @@
-export const CHANGE_COLOR = "CHANGE_COLOR/CONSTRUCTOR"
+export const GET_CARS_JSON = "GET_CARS_JSON"

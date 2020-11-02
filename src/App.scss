@@ -1,0 +1,95 @@
+@font-face {
+  font-family: VWHead-Bold;
+  src: local('VWHead-Bold'), url("./fonts/VWHead-Bold.woff") format('woff');
+}
+
+@font-face {
+  font-family: VWHead-Light;
+  src: local('VWHead-Light'), url("./fonts/VWHead-Light.woff") format('woff');
+}
+
+@font-face {
+  font-family: VWText;
+  src: local('VWText'), url("./fonts/VWText.woff") format('woff');
+}
+
+@font-face {
+  font-family: VWText-Bold;
+  src: local('VWText-Bold'), url("./fonts/VWText-Bold.woff") format('woff');
+}
+
+$vwH-bold : VWHead-Bold, Arial, sans-serif;
+$vwH-light : VWHead-Light, Arial, sans-serif;
+$vw : VWText, Arial, sans-serif;
+$vw-bold : VWText-Bold, Arial, sans-serif;
+
+$light-grey : #f2f1f0;
+$white: #fff;
+
+@mixin center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+body,html{
+  font-size: 10px;
+  font-family: $vw;
+  margin: 0;
+  padding: 0;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+.Nav{
+}
+
+.Main{
+
+  .data{
+
+    .row{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      .car,.active-car{
+
+        @include center;
+        background: rgba($light-grey,.5);
+        width: 20%;
+        padding: 1rem;
+        cursor: pointer;
+        border-radius: 5px 5px 0 0;
+        transition: .2s all;
+        img{
+          max-width: 200px;
+        }
+        &:hover{
+          background: $white;
+          transition: .5s all;
+        }
+      }
+
+      .active-car{
+        background: $white;
+      }
+
+
+    }
+
+    .table-models{
+      @include center;
+      h1{
+        font-family: $vwH-light;
+        font-size: 3rem;
+        user-select: none;
+      }
+    }
+
+  }
+
+}
+
+

@@ -4,7 +4,7 @@ import {Provider} from "react-redux"
 
 /* redux */
 import {store} from "./store/store"
-import App from "./App"
+import App from "./components/App"
 
 /* firebase */
 import firebase from "firebase"
@@ -24,9 +24,9 @@ const app = firebase.initializeApp(firebaseConfig)
 
 const database = app.database()
 
-const firebaseStorage = firebase.storage()
+export const firebaseStorage = firebase.storage()
 
-export const storageRef = firebaseStorage.ref().child('/cars/image/cards')
+// export const storageRef = firebaseStorage.ref().child('/cars/image/cards')
 
 
 ReactDOM.render(

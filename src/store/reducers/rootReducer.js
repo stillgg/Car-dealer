@@ -1,10 +1,10 @@
 import {combineReducers} from "redux"
-import {carReducer} from "./car"
+import {appReducer} from "./appReducer"
 
 
 export const rootReducer = combineReducers(
     {
-        cars : carReducer
+        cars : appReducer
     }
 )
 
