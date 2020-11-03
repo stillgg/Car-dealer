@@ -1,4 +1,7 @@
-import {GET_CARS_JSON} from "../types/types"
+import {
+    GET_CARS_JSON,
+    HANDLE_LOADER
+} from "../types/types"
 
 export function getCarsJSON() {
     return async dispatch => {
@@ -14,7 +17,14 @@ export function getCarsJSON() {
     }
 }
 
-
+export function handleLoader(value) {
+    return(
+        {
+            type: HANDLE_LOADER,
+            payload: value
+        }
+    )
+}
 
 
 

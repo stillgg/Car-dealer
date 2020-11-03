@@ -25,12 +25,20 @@ $vw-bold : VWText-Bold, Arial, sans-serif;
 
 $light-grey : #f2f1f0;
 $white: #fff;
+$dark-blue: #0c2340;
 
 @mixin center {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/*scroll delete*/
+body::-webkit-scrollbar { width: 0; }
+
+body { -ms-overflow-style: none; }
+
+body { overflow: -moz-scrollbars-none; }
 
 body,html{
   font-size: 10px;
@@ -92,4 +100,23 @@ body,html{
 
 }
 
+.preloader{
+  @include center;
+  .loader{
+    border:8px solid $dark-blue;
+    border-top-color: $white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    animation: 1s spin infinite linear;
+  }
+}
 
+@keyframes spin {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}

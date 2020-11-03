@@ -8,12 +8,14 @@ import {
 const initionalState = {
     models: null,
 
+    loader: true,
+
     tableData: {
         changedSubMenuCar : null,
         urls: null,
     }
-}
 
+}
 
 export const appReducer = (state=initionalState, action)=>{
     switch (action.type) {
@@ -31,8 +33,11 @@ export const appReducer = (state=initionalState, action)=>{
         case GET_IMG_URL:
             return {
                 ...state,
-                tableData: {...state.tableData,
-                    urls: action.payload}
+                tableData: {
+                    ...state.tableData,
+                    urls: action.payload
+                },
+                loader: action.loader /* after download img I off loader*/
             }
 
         default:
@@ -41,7 +46,8 @@ export const appReducer = (state=initionalState, action)=>{
                 tableData: {
                     changedSubMenuCar: null,
                     urls: null
-                }
+                },
+                loader: true
             }
     }
 }

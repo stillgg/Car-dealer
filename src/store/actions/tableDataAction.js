@@ -5,6 +5,8 @@ import {
 
 import {firebaseStorage} from "../../index"
 
+import {handleLoader} from "./actions"
+
 
 export function changeSubMenuCar(pos) {
     return {
@@ -20,15 +22,24 @@ export function getCarList(model) {
 
         const urls = []
 
+        dispatch(
+            {
+                type: GET_IMG_URL,
+                loader: true
+            }
+        )
+
         for (const item of list.items) {
             const url = await item.getDownloadURL()
             urls.push(url)
         }
 
+
         dispatch(
             {
                 type: GET_IMG_URL,
-                payload: urls
+                payload: urls,
+                loader: false
             }
         )
     }
