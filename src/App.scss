@@ -26,6 +26,7 @@ $vw-bold : VWText-Bold, Arial, sans-serif;
 $light-grey : #f2f1f0;
 $white: #fff;
 $dark-blue: #0c2340;
+$grey: #b6b6b6;
 
 @mixin center {
   display: flex;
@@ -48,6 +49,8 @@ body,html{
 }
 
 *{
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -72,7 +75,8 @@ body,html{
         border-radius: 5px 5px 0 0;
         transition: .2s all;
         img{
-          max-width: 200px;
+          //max-width: 200px;
+          width: 50%;
         }
         &:hover{
           background: $white;
@@ -87,12 +91,35 @@ body,html{
 
     }
 
-    .table-models{
-      @include center;
-      h1{
-        font-family: $vwH-light;
-        font-size: 3rem;
-        user-select: none;
+    .table-models {
+      //@include center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .model{
+        width: 50%;
+        padding-top: 40px;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-shadow: 0 10px 10px rgba($light-grey,0.5);
+
+        .model-header {
+          display: block;
+          text-align: center;
+          font-family: $vw;
+          font-size: 3rem;
+          user-select: none;
+          font-style: italic;
+          margin-bottom: 20px;
+        }
+
+        img{
+          width: 100%;
+        }
+
+      }
+      .preloader{
+        margin: 200px auto 0;
       }
     }
 
@@ -108,7 +135,7 @@ body,html{
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    animation: 1s spin infinite linear;
+    animation: .7s spin infinite linear;
   }
 }
 

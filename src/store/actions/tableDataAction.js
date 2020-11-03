@@ -25,7 +25,7 @@ export function getCarList(model) {
         dispatch(
             {
                 type: GET_IMG_URL,
-                loader: true
+                loader: true /* before */
             }
         )
 
@@ -34,13 +34,13 @@ export function getCarList(model) {
             urls.push(url)
         }
 
-
-        dispatch(
+        setTimeout(() => dispatch(
             {
                 type: GET_IMG_URL,
                 payload: urls,
-                loader: false
+                loader: false /* after */
             }
+            ), 750
         )
     }
 }

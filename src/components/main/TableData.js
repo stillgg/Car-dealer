@@ -17,7 +17,6 @@ import {
 class TableData extends Component{
     componentDidMount() {
         this.props.getCarsJSON()
-        // this.props.getCarList('Maserati')
     }
 
     render(){
@@ -27,8 +26,6 @@ class TableData extends Component{
         if(this.props.cars.models){
             cars = Object.keys(this.props.cars.models)
         }
-
-        console.log(state.tableData.urls)
 
         return(
             <div className={"data"}>
@@ -42,9 +39,9 @@ class TableData extends Component{
                                          state.tableData.changedSubMenuCar === index ? "active-car" : "car"
                                      }
 
-                                     onClick={ ()=> {
-                                         this.props.changeSubMenuCar(index)
-                                         this.props.getCarList(item)
+                                     onClick={ async ()=> {
+                                         await this.props.changeSubMenuCar(index)
+                                         await this.props.getCarList(item)
                                      } }
                                 >
                                     <img
@@ -59,26 +56,34 @@ class TableData extends Component{
 
                 <div className={"table-models"} >
 
-                    <div className={"car-list"}>
+                    {/*<div className={"car-list"}>*/}
 
                         {
-
-                            state.tableData.changedSubMenuCar !== null ?
-                                state.loader ?
-                                    <Preloader/>
-                                    :
+                            state.loader ?
+                                <Preloader/>
+                                :
+                                state.tableData.changedSubMenuCar !== null ?
                                     state.tableData.urls ?
                                         state.tableData.urls.map((item, index) => {
+                                            const models = this.props.cars.models
+                                            const id = this.props.cars.tableData.changedSubMenuCar
+                                            const selectCarModels = Object.keys(models[cars[id]])
+                                            console.log('carModels',selectCarModels)
+
                                             return (
-                                                <img src={state.tableData.urls[index]} alt="car"/>
+                                                <div key={index} className={"model"}>
+                                                    <span className={"model-header"}>{selectCarModels[index]}</span>
+                                                    <img src={state.tableData.urls[index]} alt="car"/>
+                                                </div>
                                             )
                                         })
                                         :
                                         false
-                                :
-                                <h1>Выберите автомобиль</h1>
+                                    :
+                                    <h1>Выберите марку автомобиля</h1>
                         }
-                    </div>
+
+                    {/*</div>*/}
 
                 </div>
             </div>
@@ -87,7 +92,7 @@ class TableData extends Component{
 
 }
 
-const mapStateToProps = (state)=>state
+const mapStateToProps = (state) => state
 
 const mapDispatchToProps = {
     getCarsJSON,

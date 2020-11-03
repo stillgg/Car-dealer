@@ -8,26 +8,29 @@ import {
 const initionalState = {
     models: null,
 
-    loader: true,
+    loader: false,
 
     tableData: {
         changedSubMenuCar : null,
         urls: null,
     }
-
 }
 
 export const appReducer = (state=initionalState, action)=>{
     switch (action.type) {
         case GET_CARS_JSON:
-            return { ...state, models: action.payload }
+            return {
+                ...state,
+                models: action.payload
+            }
 
         case CHANGED_SUBMENU_CAR:
             return {
                 ...state,
                 tableData: {
                     ...state.tableData,
-                    changedSubMenuCar: action.payload}
+                    changedSubMenuCar: action.payload
+                }
             }
 
         case GET_IMG_URL:
@@ -37,17 +40,17 @@ export const appReducer = (state=initionalState, action)=>{
                     ...state.tableData,
                     urls: action.payload
                 },
-                loader: action.loader /* after download img I off loader*/
+                loader: action.loader /* before and after download img, toggle loader*/
             }
 
         default:
             return {
                 ...state,
-                tableData: {
-                    changedSubMenuCar: null,
-                    urls: null
-                },
-                loader: true
+                // tableData: {
+                //     changedSubMenuCar: null,
+                //     urls: null
+                // },
+                loader: false,
             }
     }
 }
