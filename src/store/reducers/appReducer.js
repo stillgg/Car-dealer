@@ -1,9 +1,11 @@
 import {GET_CARS_JSON} from "../types/types"
 import {
-    CHANGED_SUBMENU_CAR,
+    CHANGE_SUBMODEL,
+    CHANGE_MODEL,
     GET_IMG_URL
 } from "../types/tableDataTypes"
 
+import {GET_INFO_ABOUT_CAR} from "../types/aboutCarTypes"
 
 const initionalState = {
     models: null,
@@ -11,8 +13,12 @@ const initionalState = {
     loader: false,
 
     tableData: {
-        changedSubMenuCar : null,
+        changedSubModel: null,
+        changedModel: null,
         urls: null,
+    },
+    aboutCar:{
+        videoUrl: null
     }
 }
 
@@ -24,12 +30,18 @@ export const appReducer = (state=initionalState, action)=>{
                 models: action.payload
             }
 
-        case CHANGED_SUBMENU_CAR:
+        case CHANGE_SUBMODEL:
+            return {
+                ...state,
+                tableData: {...state.tableData, changedSubModel: action.payload}
+            }
+
+        case CHANGE_MODEL:
             return {
                 ...state,
                 tableData: {
                     ...state.tableData,
-                    changedSubMenuCar: action.payload
+                    changedModel: action.payload
                 }
             }
 
@@ -43,13 +55,18 @@ export const appReducer = (state=initionalState, action)=>{
                 loader: action.loader /* before and after download img, toggle loader*/
             }
 
+        case GET_INFO_ABOUT_CAR:
+            return {
+                ...state,
+                aboutCar:{
+                    ...state.aboutCar,
+                    videoUrl: action.payload
+                }
+            }
+
         default:
             return {
                 ...state,
-                // tableData: {
-                //     changedSubMenuCar: null,
-                //     urls: null
-                // },
                 loader: false,
             }
     }

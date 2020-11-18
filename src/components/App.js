@@ -1,20 +1,21 @@
-import React , {Component} from "react"
+import React  from "react"
 import Nav from "./Nav"
 import Main from "./Main"
+import {BrowserRouter} from "react-router-dom"
 
 import '../App.scss'
 
-class App extends Component{
 
-    render(props){
-        return(
+const App = (props) =>{
+    return(
+        <BrowserRouter>
             <React.Fragment>
                 <Nav/>
                 <Main/>
             </React.Fragment>
-        )
-    }
-
+        </BrowserRouter>
+    )
 }
+
 
 export default App

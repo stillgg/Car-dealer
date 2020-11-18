@@ -1,0 +1,1 @@
+export const GET_INFO_ABOUT_CAR = "GET_INFO_ABOUT_CAR/AboutCar"

@@ -9,9 +9,11 @@ import {
 } from "../../store/actions/actions"
 
 import {
-    changeSubMenuCar,
+    changeSubModel,
+    changeModel,
     getCarList
 } from "../../store/actions/tableDataAction"
+import {Link} from "react-router-dom"
 
 
 class TableData extends Component{
@@ -19,19 +21,29 @@ class TableData extends Component{
         this.props.getCarsJSON()
     }
 
+    getModel(models,id){
+        return models[id]
+    }
+
+    getModelsArr(models){
+        return Object.keys(models)
+    }
+
+
     render(){
         const state = this.props.cars
-        let cars = this.props.cars.models
+
+        let modelsArr
 
         if(this.props.cars.models){
-            cars = Object.keys(this.props.cars.models)
+            modelsArr = this.getModelsArr(this.props.cars.models)
         }
 
         return(
             <div className={"data"}>
                 <div className={"row"}>
                     {
-                        cars ? cars.map(
+                        modelsArr ? modelsArr.map(
                             (item, index) => (
                                 <div key={index}
 
@@ -40,8 +52,8 @@ class TableData extends Component{
                                      }
 
                                      onClick={ async ()=> {
-                                         await this.props.changeSubMenuCar(index)
                                          await this.props.getCarList(item)
+                                         this.props.changeModel(item)
                                      } }
                                 >
                                     <img
@@ -55,36 +67,42 @@ class TableData extends Component{
                 </div>
 
                 <div className={"table-models"} >
-
-                    {/*<div className={"car-list"}>*/}
-
                         {
                             state.loader ?
                                 <Preloader/>
                                 :
-                                state.tableData.changedSubMenuCar !== null ?
+                                state.tableData.changedModel !== null ?
                                     state.tableData.urls ?
                                         state.tableData.urls.map((item, index) => {
                                             const models = this.props.cars.models
-                                            const id = this.props.cars.tableData.changedSubMenuCar
-                                            const selectCarModels = Object.keys(models[cars[id]])
-                                            console.log('carModels',selectCarModels)
+                                            const changedModel = this.props.cars.tableData.changedModel
+                                            const subModels = Object.keys(models[changedModel])
+                                            const aboutCarPath = this.getModel(subModels,index)
 
                                             return (
                                                 <div key={index} className={"model"}>
-                                                    <span className={"model-header"}>{selectCarModels[index]}</span>
-                                                    <img src={state.tableData.urls[index]} alt="car"/>
+                                                    <span className={"model-header"}>{subModels[index]}</span>
+
+                                                    <div className="img-wrapper">
+                                                        <img src={state.tableData.urls[index]} alt="car"/>
+                                                    </div>
+
+                                                    <div className={"btn-wrapper"}>
+                                                        <Link
+                                                            to={`/${aboutCarPath}`} className={"btn"}
+                                                            onClick={ ()=> this.props.changeSubModel(subModels[index]) }
+                                                        >
+                                                            выбрать
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             )
                                         })
                                         :
                                         false
                                     :
-                                    <h1>Выберите марку автомобиля</h1>
+                                    <h1 className={"title"}>Выберите марку автомобиля</h1>
                         }
-
-                    {/*</div>*/}
-
                 </div>
             </div>
         )
@@ -96,14 +114,13 @@ const mapStateToProps = (state) => state
 
 const mapDispatchToProps = {
     getCarsJSON,
-    changeSubMenuCar,
+    changeSubModel,
+    changeModel,
     getCarList,
     handleLoader
 }
 
-
 export default connect(mapStateToProps,mapDispatchToProps)(TableData)
-
 
 
 

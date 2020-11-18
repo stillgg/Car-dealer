@@ -1,21 +1,22 @@
 import {
-    CHANGED_SUBMENU_CAR,
+    CHANGE_SUBMODEL,
+    CHANGE_MODEL,
     GET_IMG_URL
 } from "../types/tableDataTypes"
 
 import {firebaseStorage} from "../../index"
 
-import {handleLoader} from "./actions"
+export const changeSubModel = subModel =>({
+    type: CHANGE_SUBMODEL,
+    payload: subModel
+})
 
+export const changeModel = pos => ({
+    type: CHANGE_MODEL,
+    payload: pos
+})
 
-export function changeSubMenuCar(pos) {
-    return {
-        type: CHANGED_SUBMENU_CAR,
-        payload: pos
-    }
-}
-
-export function getCarList(model) {
+export const getCarList = model =>{
     return async dispatch =>{
         const response = await firebaseStorage.ref().child(`/cars/image/cards/${model}`)
         const list = await response.listAll()
@@ -40,7 +41,7 @@ export function getCarList(model) {
                 payload: urls,
                 loader: false /* after */
             }
-            ), 750
+            ), 1500
         )
     }
 }
