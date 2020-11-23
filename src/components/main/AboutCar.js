@@ -7,23 +7,40 @@ import Preloader from "../Preloader"
 
 
 class AboutCar extends Component{
+
+    getCar(){
+        const model = this.props.cars.tableData.changedModel
+        const subModel = this.props.cars.tableData.changedSubModel
+
+        return `${model}-${subModel}`
+    }
+
     componentDidMount() {
-        return this.props.getVideo("Maserati-Levante")
+
+        const car = this.getCar()
+        console.log(car)
+        return this.props.getVideo(car)
     }
 
     render(props) {
         const preview = this.props.cars.aboutCar.videoUrl
         return(
-            <div>
-                {preview?
-                    <video>
-                        <source src={preview}/>
-                    </video>
-                    :
-                    <Preloader/>
-                }
-                about car
-            </div>
+            <React.Fragment>
+                <div className="aboutCar">
+                    {preview?
+                        <video src={preview} muted autoPlay loop>
+                        </video>
+                        :
+                        <Preloader/>
+                    }
+                </div>
+                <div className="constructor">
+                    <h2>Собери свой {this.getCar()}</h2>
+                    <div>
+
+                    </div>
+                </div>
+            </React.Fragment>
         )
     }
 

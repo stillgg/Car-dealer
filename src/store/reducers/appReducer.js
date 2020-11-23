@@ -15,7 +15,7 @@ const initionalState = {
     tableData: {
         changedSubModel: null,
         changedModel: null,
-        urls: null,
+        urls: null
     },
     aboutCar:{
         videoUrl: null
