@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
     "firebase": "^8.0.0",
+    "firebase-admin": "^9.4.1",
     "hookrouter": "^1.2.3",
     "node-sass": "^4.14.1",
     "react": "^17.0.1",

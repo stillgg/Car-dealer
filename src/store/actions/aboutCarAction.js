@@ -34,3 +34,11 @@ export const getVideo = car =>{
 
     }
 }
+
+export const getImgs = (model,subModel,configuration) =>{
+    return async dispatch =>{
+        const icons = await firebaseStorage.ref().child(`/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/icons`)
+
+
+    }
+}

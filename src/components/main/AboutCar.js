@@ -4,29 +4,49 @@ import {connect} from "react-redux"
 import {getVideo} from "../../store/actions/aboutCarAction"
 
 import Preloader from "../Preloader"
+import Slider from "../Slider"
 
 
 class AboutCar extends Component{
 
-    getCar(){
-        const model = this.props.cars.tableData.changedModel
-        const subModel = this.props.cars.tableData.changedSubModel
+    getModel(){
+        return this.props.cars.tableData.changedModel
+    }
 
-        return `${model}-${subModel}`
+    getSubModel(){
+        return this.props.cars.tableData.changedSubModel
+    }
+
+    getCarName(){
+        return `${this.getModel()}-${this.getSubModel()}`
     }
 
     componentDidMount() {
+        const carName = this.getCarName()
 
-        const car = this.getCar()
-        console.log(car)
-        return this.props.getVideo(car)
+        const model = this.props.cars.tableData.changedModel
+        const subModel = this.props.cars.tableData.changedSubModel
+
+        // const carInfo = this.props.cars.models[model][subModel]
+        // const configuration = carInfo.configuration
+        // console.log(configuration)
+        
+        this.props.getVideo(carName)
     }
 
     render(props) {
         const preview = this.props.cars.aboutCar.videoUrl
+
+        const model = this.props.cars.tableData.changedModel
+        const subModel = this.props.cars.tableData.changedSubModel
+
+        const carInfo = this.props.cars.models[model][subModel]
+        const configuration = carInfo.configuration
+        // const complictation = carInfo.complictation
+
         return(
             <React.Fragment>
-                <div className="aboutCar">
+                  <div className="preview">
                     {preview?
                         <video src={preview} muted autoPlay loop>
                         </video>
@@ -35,9 +55,22 @@ class AboutCar extends Component{
                     }
                 </div>
                 <div className="constructor">
-                    <h2>Собери свой {this.getCar()}</h2>
-                    <div>
-
+                    <h2 className="header">Собери свой {this.getCarName()}</h2>
+                    <div className="main">
+                        <Slider/>
+                        <div className="options">
+                            {
+                                Object.keys(configuration).map(
+                                    (item,index) =>{
+                                        return(
+                                            <div key={index} className={"option"}>
+                                                {item}
+                                            </div>
+                                        )
+                                    }
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
