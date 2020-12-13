@@ -35,7 +35,15 @@ const initionalState = {
             "https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fconstructor%2FMaserati%2Fmaserati-Levante%2Fresult%2Fbody%2FBianco_AnteoBlackStaggered_Blu_4.jfif?alt=media&token=25e04697-8834-44c7-8b53-170b4e1557f7"
         ],
         pos: 0,
-        prevPos: 0
+        prevPos: 0,
+        responseTime: 500,
+        sliderWidth: null,
+        swipeStartTime: null,
+        swipeEndTime: null,
+        X1: 0, /* начальная координата косания */
+        X2: 0, /* конечная координата косания */
+        responseWidthSwipe: 20, /* свайп должен быть длиной больше 20% ширины слайдера*/
+        widthSwipe: null
     }
 }
 

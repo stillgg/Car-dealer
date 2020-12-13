@@ -27,6 +27,7 @@ class Slider extends Component {
         })
     }
 
+
     render() {
         const sliderImgs = this.props.cars.slider.imgUrls
         const sliderLength = sliderImgs.length -1
@@ -36,7 +37,18 @@ class Slider extends Component {
         let prev = "active"
         let next = "active"
 
+        const slider = document.querySelector(".slider")
         const slides = document.querySelectorAll(".slide")
+
+        // const sliderWidth = this.props.cars.sliderWidth
+        // const responseTime = this.props.cars.slider.responseTime
+
+        let touchStartTime
+        let touchEndTime
+        let X1
+        let X2
+
+
 
         const activeSlide = slides[pos]
 
@@ -51,7 +63,42 @@ class Slider extends Component {
 
 
         return (
-            <div className="slider">
+            <div className="slider"
+                 // onTouchMove={(e)=>{
+                 //     console.log(e.touches[0].clientX)
+                 // }}
+                 onTouchStart={(e)=>{
+                     X1 = Math.round(e.targetTouches[0].clientX)
+                     console.log('start',
+                         X1
+                     )
+                 }}
+
+                 onTouchEnd={(e)=>{
+                     X2 = Math.round(e.changedTouches[0].clientX)
+
+                     if( X2-X1 < 100 && X2-X1 > -100){
+                         return
+                     }
+
+                     if( e.target.className.includes("prev")  ){
+                         this.prevHandler(pos)
+                         return
+                     }
+
+                     if( e.target.className.includes("next") ){
+                         this.nextHandler(pos,sliderLength)
+                         return
+                     }
+
+                     if(X1<X2){
+                         this.prevHandler(pos)
+                     }else{
+                         this.nextHandler(pos,sliderLength)
+                     }
+                 }}
+
+            >
 
                 <div className={`prev ${prev}`}
                      onClick={
@@ -82,15 +129,6 @@ class Slider extends Component {
                                         }}
                             >
                             </div>
-
-                        // case prevPos:
-                        //     return <div key={id} className={`slide slide${id} prevSlide`}
-                        //                 style={{
-                        //                     backgroundImage: `url(${item})`,
-                        //                     transform: `translate(${(id-pos)*100}%)`
-                        //                 }}
-                        //     >
-                        //     </div>
 
                         default:
                             return (
