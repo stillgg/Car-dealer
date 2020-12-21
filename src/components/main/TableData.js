@@ -1,7 +1,7 @@
 import React , {Component} from "react"
 import {connect} from "react-redux"
 
-import Preloader from "../Preloader"
+import Preloader from "../preloaders/Preloader"
 
 import {
     getCarsJSON,

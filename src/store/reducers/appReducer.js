@@ -1,4 +1,4 @@
-import {GET_CARS_JSON, UPDATE_SLIDER} from "../types/types"
+import {GET_CARS_JSON, GET_IMG_URL_SLIDER, UPDATE_SLIDER} from "../types/types"
 import {
     CHANGE_SUBMODEL,
     CHANGE_MODEL,
@@ -34,16 +34,15 @@ const initionalState = {
             "https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fconstructor%2FMaserati%2Fmaserati-Levante%2Fresult%2Fbody%2FBianco_AnteoBlackStaggered_Blu_3.jfif?alt=media&token=e621ea63-c336-43bd-9c0e-c78904bf094a",
             "https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fconstructor%2FMaserati%2Fmaserati-Levante%2Fresult%2Fbody%2FBianco_AnteoBlackStaggered_Blu_4.jfif?alt=media&token=25e04697-8834-44c7-8b53-170b4e1557f7"
         ],
+        prev: "disable",
+        next: "active",
         pos: 0,
-        prevPos: 0,
-        responseTime: 500,
-        sliderWidth: null,
-        swipeStartTime: null,
-        swipeEndTime: null,
-        X1: 0, /* начальная координата косания */
+        // prevPos: 0,
+        X1: 0, /* начальная координата косания относительно окна браузера по оси x */
         X2: 0, /* конечная координата косания */
-        responseWidthSwipe: 20, /* свайп должен быть длиной больше 20% ширины слайдера*/
-        widthSwipe: null
+        touchPosSliderX1: 0, /* начальная координата косания относительно слайдера по оси x */
+        touchPosSliderX2: 0,
+        howPercentSwipeWidthToChangeSlide : 10, /* свайп должен быть длиной больше указанной ширины(%) слайдера для показа другого слайда*/
     }
 }
 
@@ -99,6 +98,16 @@ export const appReducer = (state=initionalState, action)=>{
                 },
 
 
+            }
+
+        case GET_IMG_URL_SLIDER:
+            return {
+                ...state,
+                loader: action.loader,
+                slider :{
+                    ...state.slider,
+                    imgUrls: action.payload
+                }
             }
 
         default:

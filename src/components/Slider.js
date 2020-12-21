@@ -1,10 +1,29 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import {updateSlider} from "../store/actions/actions"
+import {getImgSlider, updateSlider} from "../store/actions/actions"
+import PreloaderV2 from "./preloaders/PreloaderV2"
 
 class Slider extends Component {
     componentDidMount() {
-        
+        this.getStrDefaultBodyConfiguration()
+    }
+
+    getStrDefaultBodyConfiguration(){
+        const model = this.props.tableData.changedModel
+        const subModel = this.props.tableData.changedSubModel
+
+        const conf = this.props.models[model][subModel].configuration.body
+
+        let key = ''
+
+        for(const i in conf){
+            key+=conf[i][0] + '_'
+        }
+
+        console.log("model",model)
+        console.log("subModel",subModel)
+
+        this.props.getImgSlider(model,subModel ,key.slice(0,-1) )
     }
 
     prevHandler(pos){
@@ -27,30 +46,86 @@ class Slider extends Component {
         })
     }
 
+    getTouchPosOnSlider(pos, sliderWidth, sliderMarginLeft){
+        return (pos-parseInt(sliderMarginLeft)) *100/sliderWidth //вычисляем положение косания относительно слайдера
+    }
+
+    touchStartHandler(X1){
+        this.props.updateSlider(
+            {X1}
+        )
+    }
+
+    touchEndHandler(
+        X1, X2, sliderMarginLeft, sliderWidth,
+        HPSWTChangeSlide, pos, sliderLength, className
+    ){
+
+        const touchPosSliderX1 = this.getTouchPosOnSlider(
+            X1, sliderWidth, sliderMarginLeft
+        )
+
+        const touchPosSliderX2 = this.getTouchPosOnSlider(
+            X2, sliderWidth, sliderMarginLeft
+        )
+
+        if(
+            touchPosSliderX2 - touchPosSliderX1 < HPSWTChangeSlide
+            &&
+            touchPosSliderX2 - touchPosSliderX1 > -HPSWTChangeSlide
+        ){
+            return
+        }
+
+        if( className.includes("prev")  ){
+            this.prevHandler(pos)
+            return
+        }
+
+        if( className.includes("next") ){
+            this.nextHandler(pos,sliderLength)
+            return
+        }
+
+        if(X1<X2){
+            this.prevHandler(pos)
+        }else{
+            this.nextHandler(pos,sliderLength)
+        }
+
+        this.props.updateSlider(
+            {
+                X2, touchPosSliderX1, touchPosSliderX2
+            }
+        )
+    }
+
+    calcTransformSlide(id,pos){
+        return (id-pos) * 100
+    }
 
     render() {
-        const sliderImgs = this.props.cars.slider.imgUrls
-        const sliderLength = sliderImgs.length -1
-        const pos = this.props.cars.slider.pos
-        const prevPos = this.props.cars.slider.prevPos
+        const sliderImgs = this.props.slider.imgUrls
+        const sliderLength = sliderImgs? sliderImgs.length - 1: false
+        const pos = this.props.slider.pos
+        // const prevPos = this.props.prevPos
 
         let prev = "active"
         let next = "active"
 
         const slider = document.querySelector(".slider")
-        const slides = document.querySelectorAll(".slide")
+        // const slides = document.querySelectorAll(".slide")
 
-        // const sliderWidth = this.props.cars.sliderWidth
-        // const responseTime = this.props.cars.slider.responseTime
+        const sliderWidth = slider? slider.clientWidth : false
+        const sliderStyles = slider? getComputedStyle(slider) : false
+        const sliderMarginLeft = slider? sliderStyles.marginLeft : false
 
-        let touchStartTime
-        let touchEndTime
-        let X1
-        let X2
+        const HPSWTChangeSlide = this.props.slider.howPercentSwipeWidthToChangeSlide
 
+        const X1 = this.props.slider.X1
+        // const X2 = this.props.X2
 
-
-        const activeSlide = slides[pos]
+        // const activeSlide = slides[pos]
 
         switch (pos) {
             case sliderLength:
@@ -59,43 +134,29 @@ class Slider extends Component {
             case 0:
                 prev = "disable"
                 break
+            default:
+                break
         }
-
 
         return (
             <div className="slider"
-                 // onTouchMove={(e)=>{
-                 //     console.log(e.touches[0].clientX)
-                 // }}
+
                  onTouchStart={(e)=>{
-                     X1 = Math.round(e.targetTouches[0].clientX)
-                     console.log('start',
-                         X1
+                     this.touchStartHandler(
+                         Math.round(e.targetTouches[0].clientX)
                      )
                  }}
 
                  onTouchEnd={(e)=>{
-                     X2 = Math.round(e.changedTouches[0].clientX)
+                     const className = e.target.className
 
-                     if( X2-X1 < 100 && X2-X1 > -100){
-                         return
-                     }
+                     this.touchEndHandler(
+                         X1, Math.round(e.changedTouches[0].clientX),
+                         sliderMarginLeft,
+                         sliderWidth, HPSWTChangeSlide,
+                         pos, sliderLength, className
+                     )
 
-                     if( e.target.className.includes("prev")  ){
-                         this.prevHandler(pos)
-                         return
-                     }
-
-                     if( e.target.className.includes("next") ){
-                         this.nextHandler(pos,sliderLength)
-                         return
-                     }
-
-                     if(X1<X2){
-                         this.prevHandler(pos)
-                     }else{
-                         this.nextHandler(pos,sliderLength)
-                     }
                  }}
 
             >
@@ -116,40 +177,46 @@ class Slider extends Component {
                         }
                     }
                 >&rsaquo;</div>
+                {
+                    sliderImgs?
+                        sliderImgs.map((item, id) => {
 
-                {sliderImgs.map((item, id) => {
+                                switch (id) {
+                                    case pos:
+                                        return <div key={id} className={`slide slide${id} activeSlide`}
+                                                    style={{
+                                                        backgroundImage: `url(${item})`,
+                                                        zIndex: "100",
+                                                        transform: `translate(${this.calcTransformSlide(id,pos)}%)`
+                                                    }}
+                                        >
+                                        </div>
 
-                    switch (id) {
-                        case pos:
-                            return <div key={id} className={`slide slide${id} activeSlide`}
-                                        style={{
-                                            backgroundImage: `url(${item})`,
-                                            zIndex: "100",
-                                            transform: `translate(${(id-pos)*100}%)`
-                                        }}
-                            >
-                            </div>
-
-                        default:
-                            return (
-                                <div key={id} className={`slide slide${id}`}
-                                     style={{
-                                         backgroundImage: `url(${item})`,
-                                         transform: `translate(${(id-pos)*100}%)`
-                                     }}
-                                >
-                                </div>
-                            )
-                    }
-                })}
+                                    default:
+                                        return (
+                                            <div key={id} className={`slide slide${id}`}
+                                                 style={{
+                                                     backgroundImage: `url(${item})`,
+                                                     transform: `translate(${this.calcTransformSlide(id,pos)}%)`
+                                                 }}
+                                            >
+                                            </div>
+                                        )
+                                }
+                            })
+                        :
+                        <PreloaderV2/>
+                }
             </div>
         )
     }
 }
 
-const mapStateToProps = (state) => state
+const mapStateToProps = (state) => state.cars
+
 const mapDispatchToProps = {
-    updateSlider
+    updateSlider,
+    getImgSlider
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Slider)
