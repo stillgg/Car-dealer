@@ -204,8 +204,8 @@ class Slider extends Component {
                                         )
                                 }
                             })
-                        :
-                        <PreloaderV2/>
+                        :false
+                        // <PreloaderV2/>
                 }
             </div>
         )

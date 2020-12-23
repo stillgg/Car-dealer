@@ -40,6 +40,7 @@ export function updateSlider(conf){
 }
 
 export function getImgSlider(model,subModel,conf) {
+
     return async dispatch =>{
         const response = await firebaseStorage.ref().child(
             `/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/result/body`

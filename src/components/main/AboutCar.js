@@ -1,17 +1,42 @@
 import React , {Component} from "react"
 
 import {connect} from "react-redux"
-import {getVideo} from "../../store/actions/aboutCarAction"
+import {
+    changeIconSelect,
+    changeOptionSelect,
+    getIcons,
+    getVideo,
+    updateAboutCar
+} from "../../store/actions/aboutCarAction"
 
 import Preloader from "../preloaders/Preloader"
 import Slider from "../Slider"
-import PreloaderV2 from "../preloaders/PreloaderV2";
+import PreloaderV2 from "../preloaders/PreloaderV2"
+import {getImgSlider} from "../../store/actions/actions";
 
 
 class AboutCar extends Component{
 
-    optionClickHandler(targetNode,nodeList){
+    imgSliderHandler(){
+        const model = this.props.cars.tableData.changedModel
+        const subModel = this.props.cars.tableData.changedSubModel
 
+        const conf = this.props.cars.models[model][subModel].configuration.body
+
+
+        let key = ""
+
+        for(const i in this.props.cars.aboutCar.iconSelect){
+            if(!conf[i]){
+                continue
+            }
+            key+= conf[i][this.props.cars.aboutCar.iconSelect[i]] + "_"
+        }
+
+        this.props.getImgSlider(model,subModel ,key.slice(0,-1) )
+    }
+
+    optionClickHandler(targetNode,nodeList,optionSelect){
         for(const node of nodeList){
 
             if(targetNode === node){
@@ -21,6 +46,8 @@ class AboutCar extends Component{
             }
 
         }
+
+        this.props.changeOptionSelect(optionSelect)
     }
 
     getModel(){
@@ -35,6 +62,35 @@ class AboutCar extends Component{
         return `${this.getModel()}-${this.getSubModel()}`
     }
 
+    getCarInfo(model,subModel){
+        return this.props.cars.models[model][subModel].configuration
+    }
+
+    iconPanelHandler(bodyConfiguration,optionSelect){
+        return Object.keys(bodyConfiguration)[optionSelect]
+    }
+
+    iconClickHandler(targetNode,nodeList,bodyConfiguration,iconSelect){
+        const optionSelect = this.props.cars.aboutCar.optionSelect
+        const key = Object.keys(bodyConfiguration)[optionSelect]
+
+        for(const node of nodeList){
+
+            if(targetNode === node){
+                node.classList.add("active")
+            }else{
+                node.classList.remove("active")
+            }
+
+        }
+
+        this.props.changeIconSelect(
+            {
+                [key] :iconSelect
+            }
+        )
+    }
+
     componentDidMount() {
         const carName = this.getCarName()
 
@@ -44,19 +100,26 @@ class AboutCar extends Component{
         // const carInfo = this.props.cars.models[model][subModel]
         // const configuration = carInfo.configuration
         // console.log(configuration)
-        
+        // const optionSelect = this.getFirstOption(model,subModel)
+
         this.props.getVideo(carName)
+        this.props.getIcons(model,subModel)
     }
 
     render(props) {
         const preview = this.props.cars.aboutCar.videoUrl
+        const optionSelect = this.props.cars.aboutCar.optionSelect
 
         const model = this.props.cars.tableData.changedModel
         const subModel = this.props.cars.tableData.changedSubModel
 
         const carInfo = this.props.cars.models[model][subModel]
-        const configuration = carInfo.configuration.body
+        const bodyConfiguration = carInfo.configuration.body
         // const complictation = carInfo.complictation
+        const icons = this.props.cars.aboutCar.iconsUrls
+        // console.log("icons",icons[Object.keys(bodyConfiguration)[optionSelect]])
+        const iconSelect = this.props.cars.aboutCar.iconSelect
+
 
         return(
             <React.Fragment>
@@ -74,15 +137,16 @@ class AboutCar extends Component{
                         <Slider/>
                         <ul className="options">
                             {
-                                Object.keys(configuration).map(
+                                Object.keys(bodyConfiguration).map(
                                     (item, index) => {
-                                        if(!index){
+                                        if(index === optionSelect){
                                             return (
                                                 <li key={index} className={"option active"}
                                                      onClick={(e)=>{
                                                          this.optionClickHandler(
                                                              e.target,
-                                                             e.target.parentNode.children
+                                                             e.target.parentNode.children,
+                                                             index
                                                          )
                                                      }}
                                                 >
@@ -94,7 +158,8 @@ class AboutCar extends Component{
                                                     onClick={(e)=>{
                                                         this.optionClickHandler(
                                                             e.target,
-                                                            e.target.parentNode.children
+                                                            e.target.parentNode.children,
+                                                            index
                                                         )
                                                     }}
                                         >
@@ -106,15 +171,53 @@ class AboutCar extends Component{
                             }
                         </ul>
                         <ul className="icons-panel">
-                            <li className="icon">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fconstructor%2FMaserati%2Fmaserati-Levante%2Ficons%2Fbackground%2FBianco.jpg?alt=media&token=2050f627-e7cc-44f4-a278-e3f192487b2d" alt=""/>
-                            </li>
-                            <li className="icon">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fconstructor%2FMaserati%2Fmaserati-Levante%2Ficons%2Fbackground%2FBlueEmozione.jpg?alt=media&token=f7519dfe-9653-404e-8016-95a758f18b97" alt=""/>
-                            </li>
-                            <li className="icon">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fconstructor%2FMaserati%2Fmaserati-Levante%2Ficons%2Fbackground%2FNeroRibelle.jpg?alt=media&token=461ad219-c015-4f12-817c-83817dfe6d7a" alt=""/>
-                            </li>
+                            {
+                                icons ?
+                                    icons[this.iconPanelHandler(bodyConfiguration,optionSelect)]
+                                        .map((item, index) => {
+                                            const key = Object.keys(bodyConfiguration)[optionSelect]
+
+                                            const activeIconEl = iconSelect[key]
+
+                                            if (index === activeIconEl) {
+                                                return (
+                                                    <li className="icon active" key={index}
+                                                        onClick={(e)=>{
+                                                            this.iconClickHandler(
+                                                                e.target,
+                                                                e.target.parentNode.children,
+                                                                bodyConfiguration,
+                                                                index
+                                                            )
+                                                        }}>
+                                                        <img src={`${item}`} alt="icon"/>
+                                                    </li>)
+                                            }
+
+                                            return (
+                                                <li className="icon" key={index}
+                                                    onClick={async(e)=>{
+                                                        await this.iconClickHandler(
+                                                            e.target,
+                                                            e.target.parentNode.children,
+                                                            bodyConfiguration,
+                                                            index
+                                                        )
+                                                        await this.imgSliderHandler()
+                                                    }}>
+                                                    <img src={`${item}`} alt="icon"/>
+                                                </li>
+                                            )
+                                        }
+                                    ) :
+                                    <div style={{
+                                        width: "100%",
+                                        height: "50px"
+                                    }}>
+                                        <PreloaderV2/>
+                                    </div>
+
+                            }
                         </ul>
                     </div>
                 </div>
@@ -127,7 +230,12 @@ class AboutCar extends Component{
 const mapStateToProps = state => state
 
 const mapDispatchToProps = {
-    getVideo
+    getVideo,
+    getIcons,
+    // updateAboutCar,
+    changeOptionSelect,
+    changeIconSelect,
+    getImgSlider
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(AboutCar)
