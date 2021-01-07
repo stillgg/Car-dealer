@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import {getImgSlider, updateSlider} from "../store/actions/actions"
+import {getImgSlider, updateImgSlider, updateSlider} from "../store/actions/actions"
 import PreloaderV2 from "./preloaders/PreloaderV2"
 
 class Slider extends Component {
@@ -19,9 +19,6 @@ class Slider extends Component {
         for(const i in conf){
             key+=conf[i][0] + '_'
         }
-
-        console.log("model",model)
-        console.log("subModel",subModel)
 
         this.props.getImgSlider(model,subModel ,key.slice(0,-1) )
     }
@@ -106,6 +103,9 @@ class Slider extends Component {
 
     render() {
         const sliderImgs = this.props.slider.imgUrls
+        const nextSliderImgs = this.props.slider.nextImgUrls
+        const prevSliderImgs = this.props.slider.prevImgUrls
+
         const sliderLength = sliderImgs? sliderImgs.length - 1: false
         const pos = this.props.slider.pos
         // const prevPos = this.props.prevPos
@@ -126,6 +126,11 @@ class Slider extends Component {
         // const X2 = this.props.X2
 
         // const activeSlide = slides[pos]
+        const nextImgUrl = this.props.slider.nextImgUrls
+        // console.log("prevImgs",prevSliderImgs)
+        // console.log("sliderImgs",sliderImgs)
+
+        console.log("IMGurl",sliderImgs)
 
         switch (pos) {
             case sliderLength:
@@ -137,6 +142,7 @@ class Slider extends Component {
             default:
                 break
         }
+
 
         return (
             <div className="slider"
@@ -177,36 +183,38 @@ class Slider extends Component {
                         }
                     }
                 >&rsaquo;</div>
+
                 {
                     sliderImgs?
                         sliderImgs.map((item, id) => {
+                            switch (id) {
+                                case pos:
+                                    return <img key={id} className={`slide slide${id} activeSlide`}
+                                                src={item} alt={""}
+                                                style={{
+                                                    zIndex: "100",
+                                                    transform: `translate(${this.calcTransformSlide(id,pos)}%)`
+                                                }}
+                                    >
+                                    </img>
 
-                                switch (id) {
-                                    case pos:
-                                        return <div key={id} className={`slide slide${id} activeSlide`}
-                                                    style={{
-                                                        backgroundImage: `url(${item})`,
-                                                        zIndex: "100",
-                                                        transform: `translate(${this.calcTransformSlide(id,pos)}%)`
-                                                    }}
+                                default:
+                                    return (
+                                        <img key={id} className={`slide slide${id}`}
+                                             src={item} alt={""}
+                                             style={{
+                                                 zIndex: "100",
+                                                 transform: `translate(${this.calcTransformSlide(id,pos)}%)`
+                                             }}
                                         >
-                                        </div>
-
-                                    default:
-                                        return (
-                                            <div key={id} className={`slide slide${id}`}
-                                                 style={{
-                                                     backgroundImage: `url(${item})`,
-                                                     transform: `translate(${this.calcTransformSlide(id,pos)}%)`
-                                                 }}
-                                            >
-                                            </div>
-                                        )
-                                }
-                            })
-                        :false
-                        // <PreloaderV2/>
+                                        </img>
+                                    )
+                            }
+                        })
+                        :
+                        <PreloaderV2/>
                 }
+
             </div>
         )
     }
@@ -216,7 +224,8 @@ const mapStateToProps = (state) => state.cars
 
 const mapDispatchToProps = {
     updateSlider,
-    getImgSlider
+    getImgSlider,
+    updateImgSlider
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Slider)

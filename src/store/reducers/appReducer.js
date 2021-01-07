@@ -9,8 +9,8 @@ import {
     CHANGE_ICON_SELECT,
     CHANGE_OPTION_SELECT,
     GET_ICONS_ABOUT_CAR,
-    GET_INFO_ABOUT_CAR,
-    UPDATE_ABOUT_CAR
+    GET_INFO_ABOUT_CAR, GET_NEXT_IMG_URL, GET_NEXT_IMG_URL_SLIDER,
+    UPDATE_ABOUT_CAR, UPDATE_IMG_SLIDER
 } from "../types/aboutCarTypes"
 
 const initionalState = {
@@ -32,7 +32,10 @@ const initionalState = {
     },
 
     slider: {
-        imgUrls: [],
+        iconLoader: false,
+        prevImgUrls: null,
+        nextImgUrls: null,
+        imgUrls: null,
         prev: "disable",
         next: "active",
         pos: 0,
@@ -104,6 +107,24 @@ export const appReducer = (state=initionalState, action)=>{
                 ...state,
                 loader: action.loader,
                 slider :{
+                    ...state.slider,
+                    imgUrls: action.payload
+                }
+            }
+
+        case GET_NEXT_IMG_URL_SLIDER:
+            return {
+                ...state,
+                slider :{
+                    ...state.slider,
+                    iconLoader: action.iconLoader,
+                    nextImgUrls: action.payload
+                }
+            }
+        case UPDATE_IMG_SLIDER:
+            return {
+                ...state,
+                slider : {
                     ...state.slider,
                     imgUrls: action.payload
                 }

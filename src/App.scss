@@ -106,7 +106,7 @@ a{
     }
 
     .table-models {
-      //@include center;
+      @include center;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -124,7 +124,7 @@ a{
         animation: .6s show-model linear;
 
         .img-wrapper {
-          width: 100%;
+          width: 45vw;
           height: 20vw;
           @include center;
         }
@@ -183,20 +183,23 @@ a{
 
   .preview {
     width: 100%;
-    height: 43vw;
-
+    //height: 43vw;
+    height: 50vh;
     video {
       width: 100vw;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
   .constructor {
     .main {
-      padding: 2em 2em 0;
+      width: 90vw;
+      margin: 0 auto;
     }
 
     .options {
-      width: 90vw;
+      width: 100%;
       background: $light-grey;
       display: flex;
 
@@ -289,7 +292,7 @@ a{
   }
 
   .slider {
-    width: 90vw;
+    width: 100%;
     height: 50vw;
     //margin: 2em auto 0;
     position: relative;
@@ -311,7 +314,7 @@ a{
       top: 50%;
       transform: translate(0, -50%);
       cursor: pointer;
-      z-index: 1000;
+      z-index: 1000000;
       opacity: 0;
       transition: .5s opacity;
       user-select: none;
@@ -342,6 +345,9 @@ a{
       transition: .5s all;
     }
 
+    .activeNextSlide{
+      animation: .5s show-model linear;
+    }
   }
 
   //@keyframes gra {

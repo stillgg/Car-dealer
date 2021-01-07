@@ -2,11 +2,12 @@ import {
     GET_CARS_JSON, GET_IMG_URL_SLIDER,
     HANDLE_LOADER, UPDATE_SLIDER
 } from "../types/types"
-import {firebaseStorage} from "../../index";
+import {firebaseStorage} from "../../index"
+import {GET_NEXT_IMG_URL_SLIDER, UPDATE_IMG_SLIDER} from "../types/aboutCarTypes"
 
-export function getCarsJSON() {
+export const getCarsJSON = () => {
     return async dispatch => {
-        try{
+        try {
             const response = await fetch("https://car-dealer-27bc6.firebaseio.com/cars/models.json")
             const json = await response.json()
             console.log(json)
@@ -16,31 +17,27 @@ export function getCarsJSON() {
                     payload: json
                 }
             )
-        }
-        catch (e) {
+        } catch (e) {
             throw e
         }
     }
 }
 
-export function handleLoader(value) {
-    return(
-        {
-            type: HANDLE_LOADER,
-            payload: value
-        }
-    )
-}
+export const handleLoader = value => (
+    {
+        type: HANDLE_LOADER,
+        payload: value
+    }
+)
 
-export function updateSlider(conf){
-    return {
+export const updateSlider = conf => (
+    {
         type: UPDATE_SLIDER,
         payload: conf
     }
-}
+)
 
-export function getImgSlider(model,subModel,conf) {
-
+export const getImgSlider = (model,subModel,conf) =>{
     return async dispatch =>{
         const response = await firebaseStorage.ref().child(
             `/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/result/body`
@@ -65,8 +62,6 @@ export function getImgSlider(model,subModel,conf) {
             }
         }
 
-        console.log(conf)
-
         setTimeout(()=>dispatch(
             {
                 type: GET_IMG_URL_SLIDER,
@@ -78,10 +73,46 @@ export function getImgSlider(model,subModel,conf) {
     }
 }
 
+export const getNextImgSlider = (model,subModel,conf, prevImgUrls) =>{
+    return async dispatch =>{
 
+        dispatch(
+            {
+                type: GET_NEXT_IMG_URL_SLIDER,
+                iconLoader: true
+            }
+        )
 
+        const response = await firebaseStorage.ref().child(
+            `/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/result/body`
+            // `/cars/image/constructor/Maserati/maserati-Levante/result/body`
+        )
 
+        const list = await response.listAll()
 
+        const imgUrls = []
+
+        for (const item of list.items){
+            if( item.location.path.includes(conf) ){
+                const url = await item.getDownloadURL()
+                imgUrls.push(url)
+            }
+        }
+
+        setTimeout(()=>dispatch(
+            {
+                type: GET_NEXT_IMG_URL_SLIDER,
+                iconLoader: false,
+                payload : imgUrls
+            }
+        ),200)
+    }
+}
+
+export const updateImgSlider = (obj)=>({
+    type: UPDATE_IMG_SLIDER,
+    payload: obj
+})
 
 
 

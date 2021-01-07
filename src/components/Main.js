@@ -11,7 +11,9 @@ const Main = (props) =>{
     return(
         <main className={"Main"}>
             <Switch>
-                <Route path={"/:aboutCarPath"} component={AboutCar}/>
+                <Route path={"/:item/:aboutCarPath"} component={AboutCar}/>
+                {/*<Route path={"/:item"} component={AboutCar}/>*/}
+                <Route path={"/:item"} component={TableData}/>
                 <Route path="/" component={TableData}/>
             </Switch>
         </main>

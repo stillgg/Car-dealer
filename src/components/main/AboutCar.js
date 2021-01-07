@@ -12,7 +12,7 @@ import {
 import Preloader from "../preloaders/Preloader"
 import Slider from "../Slider"
 import PreloaderV2 from "../preloaders/PreloaderV2"
-import {getImgSlider} from "../../store/actions/actions";
+import {getImgSlider, getNextImgSlider, updateImgSlider, updateSlider} from "../../store/actions/actions"
 
 
 class AboutCar extends Component{
@@ -23,7 +23,6 @@ class AboutCar extends Component{
 
         const conf = this.props.cars.models[model][subModel].configuration.body
 
-
         let key = ""
 
         for(const i in this.props.cars.aboutCar.iconSelect){
@@ -33,7 +32,24 @@ class AboutCar extends Component{
             key+= conf[i][this.props.cars.aboutCar.iconSelect[i]] + "_"
         }
 
+        // if(this.props.cars.slider.imgUrls !== this.props.cars.slider.prevImgUrls){
+        //
+        //     this.props.updateSlider({
+        //         prevImgUrls: this.props.cars.slider.imgUrls
+        //     })
+        // }
+
+        this.props.updateSlider(
+            {prevImgUrls: this.props.cars.slider.imgUrls}
+        )
+
         this.props.getImgSlider(model,subModel ,key.slice(0,-1) )
+        // if(this.props.cars.slider.nextImgUrls === null){
+        // }
+
+        const prevImgSlide = this.props.cars.slider.imgUrls
+
+        // this.props.getNextImgSlider(model,subModel ,key.slice(0,-1),prevImgSlide)
     }
 
     optionClickHandler(targetNode,nodeList,optionSelect){
@@ -120,7 +136,6 @@ class AboutCar extends Component{
         // console.log("icons",icons[Object.keys(bodyConfiguration)[optionSelect]])
         const iconSelect = this.props.cars.aboutCar.iconSelect
 
-
         return(
             <React.Fragment>
                 <div className="preview">
@@ -203,7 +218,7 @@ class AboutCar extends Component{
                                                             bodyConfiguration,
                                                             index
                                                         )
-                                                        await this.imgSliderHandler()
+                                                        this.imgSliderHandler()
                                                     }}>
                                                     <img src={`${item}`} alt="icon"/>
                                                 </li>
@@ -235,7 +250,10 @@ const mapDispatchToProps = {
     // updateAboutCar,
     changeOptionSelect,
     changeIconSelect,
-    getImgSlider
+    getImgSlider,
+    updateSlider,
+    getNextImgSlider,
+    updateImgSlider
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(AboutCar)

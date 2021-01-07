@@ -5,3 +5,5 @@ export const HANDLE_LOADER = "HANDLE_LOADER"
 export const UPDATE_SLIDER = "UPDATE_SLIDER"
 
 export const GET_IMG_URL_SLIDER = "GET_IMG_URL_SLIDER"
+
+

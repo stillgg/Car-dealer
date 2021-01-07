@@ -13,7 +13,7 @@ import {
     changeModel,
     getCarList
 } from "../../store/actions/tableDataAction"
-import {Link} from "react-router-dom"
+import {Link, NavLink} from "react-router-dom"
 
 
 class TableData extends Component{
@@ -45,21 +45,23 @@ class TableData extends Component{
                     {
                         modelsArr ? modelsArr.map(
                             (item, index) => (
-                                <div key={index}
+                                <NavLink key={index}
 
-                                     className={
-                                         state.tableData.changedSubMenuCar === index ? "active-car" : "car"
-                                     }
+                                      className={
+                                          state.tableData.changedSubMenuCar === index ? "active-car" : "car"
+                                      }
 
-                                     onClick={ async ()=> {
-                                         await this.props.getCarList(item)
-                                         this.props.changeModel(item)
-                                     } }
+                                      onClick={async () => {
+                                          await this.props.getCarList(item)
+                                          this.props.changeModel(item)
+                                      }}
+
+                                     to={item}
                                 >
                                     <img
                                         src={`./img/${item.toLowerCase()}-logo.svg`} alt={item}
                                     />
-                                </div>
+                                </NavLink>
                             ))
                             :
                             false
@@ -89,7 +91,7 @@ class TableData extends Component{
 
                                                     <div className={"btn-wrapper"}>
                                                         <Link
-                                                            to={`/${aboutCarPath}`} className={"btn"}
+                                                            to={`/${changedModel}/${aboutCarPath}`} className={"btn"}
                                                             onClick={ ()=> this.props.changeSubModel(subModels[index]) }
                                                         >
                                                             выбрать
