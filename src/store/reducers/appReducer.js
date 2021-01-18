@@ -2,7 +2,7 @@ import {GET_CARS_JSON, GET_IMG_URL_SLIDER, UPDATE_SLIDER} from "../types/types"
 import {
     CHANGE_SUBMODEL,
     CHANGE_MODEL,
-    GET_IMG_URL
+    GET_IMG_URL, CHANGE_VIEW, UPDATE_SLIDER_TYPE1, CHANGE_TABLE_DATA
 } from "../types/tableDataTypes"
 
 import {
@@ -15,20 +15,21 @@ import {
 
 const initionalState = {
     models: null,
-
     loader: false,
 
     tableData: {
         changedSubModel: null,
         changedModel: null,
-        urls: null
+        urls: null,
+        viewMode: "type-1",
+        complictationInfo: false
     },
 
     aboutCar:{
         videoUrl: null,
         iconsUrls: null,
         optionSelect: 0,
-        iconSelect: null
+        iconSelect: null,
     },
 
     slider: {
@@ -45,6 +46,12 @@ const initionalState = {
         touchPosSliderX1: 0, /* начальная координата косания относительно слайдера по оси x */
         touchPosSliderX2: 0,
         howPercentSwipeWidthToChangeSlide : 10, /* свайп должен быть длиной больше указанной ширины(%) слайдера для показа другого слайда*/
+    },
+
+    sliderType1: {
+        pos: 0,
+        touchStart: 0,
+        touchMovePos: 0
     }
 }
 
@@ -98,7 +105,6 @@ export const appReducer = (state=initionalState, action)=>{
                     ...state.slider,
                     ...action.payload
                 },
-
 
             }
 
@@ -172,6 +178,33 @@ export const appReducer = (state=initionalState, action)=>{
                         ...state.aboutCar.iconSelect,
                         ...action.payload
                     }
+                }
+            }
+
+        case CHANGE_VIEW:
+            return {
+                ...state,
+                tableData: {
+                    ...state.tableData,
+                    view: action.payload
+                }
+            }
+
+        case UPDATE_SLIDER_TYPE1:
+            return{
+                ...state,
+                sliderType1: {
+                    ...state.sliderType1,
+                    ...action.payload
+                }
+            }
+
+        case CHANGE_TABLE_DATA:
+            return{
+                ...state,
+                tableData: {
+                    ...state.tableData,
+                    ...action.payload
                 }
             }
 

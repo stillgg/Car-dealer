@@ -18,20 +18,32 @@
   src: local('VWText-Bold'), url("./fonts/VWText-Bold.woff") format('woff');
 }
 
+
+
 $vwH-bold : VWHead-Bold, Arial, sans-serif;
 $vwH-light : VWHead-Light, Arial, sans-serif;
 $vw : VWText, Arial, sans-serif;
 $vw-bold : VWText-Bold, Arial, sans-serif;
+//$nfs : NFS;
+
 
 $light-grey : #f2f1f0;
 $white: #fff;
 $dark-blue: #0c2340;
 $grey: #b6b6b6;
+$red: #950014;
 
-@mixin center {
+@mixin centerX {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+@mixin centerX-Y {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 /*scroll delete*/
@@ -44,6 +56,7 @@ body { overflow: -moz-scrollbars-none; }
 body,html{
   font-size: 10px;
   font-family: $vw;
+  //font-family: $nfs;
   margin: 0;
   padding: 0;
 }
@@ -53,14 +66,15 @@ body,html{
   padding: 0;
   box-sizing: border-box;
   font-family: $vw;
+  //font-family: $nfs;
   font-size: 2.5rem;
 }
-
 ul,li{
   list-style: none;
 }
 
 a{
+  color: #000000;
   text-decoration: none;
   outline: none;
 }
@@ -79,7 +93,7 @@ a{
 
       .car, .active-car {
 
-        @include center;
+        @include centerX;
         background: rgba($light-grey, .5);
         width: 20%;
         padding: 1rem;
@@ -105,33 +119,166 @@ a{
 
     }
 
-    .table-models {
-      @include center;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    .table-models-view-1{
+      position: relative;
+      //background: radial-gradient(#fff,#000);
+      //height: 50vw;
+      background-size: cover;
+      //background: url("https://files.porsche.com/filestore/image/multimedia/none/modelseries-modelexplorer-backplate/normal/f2242816-9100-11ea-80c9-005056bbdc38;sN;twebp/porsche-normal.webp");
+      box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5) inset;
+      overflow: hidden;
+      .models-wrapper{
+        height: 100%;
+        //transform: translateX(20%);
+        display:flex;
+        //align-items: center;
+        transition: .5s all;
+      }
+
+      .car{
+        width: 55vw;
+        transition: .5s all;
+        margin-right: 10vw;
+        &:hover{
+          //transform: scale(1.1) translateX(35%);
+          transition: .5s all;
+        }
+      }
+
+      .model{
+        cursor: inherit;
+        .specifications{
+          overflow: hidden;
+          .complictation{
+            overflow: hidden;
+            .info{
+              display: block;
+              width: 40%;
+              border-bottom: 1px solid $grey;
+              padding: .7em;
+            }
+          }
+          .header{
+            position: relative;
+          }
+          .active{
+            .info{
+              transform: translateY(0%);
+              transition: .5s transform;
+            }
+          }
+          .inactive{
+            .info{
+              transition: .5s transform;
+              transform: translateY(-700%);
+            }
+          }
+        }
+      }
+
+      .model.active{
+        opacity: 1;
+        .info{
+          transform: translateY(0%);
+          transition: .5s transform;
+        }
+      }
+      .model.inactive{
+        opacity: .5;
+        .info {
+          transition: .5s transform;
+          transform: translateY(-700%);
+        }
+        .specifications{
+          opacity: 0;
+        }
+        .btn-header{
+          display: none;
+        }
+      }
+      .model-header{
+        display: block;
+      }
+
+      .prev-btn,.next-btn{
+        background: $dark-blue;
+        position: absolute;
+        width: 45px;
+        height: 45px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000;
+        color: white;
+        user-select: none;
+        cursor: pointer;
+        .arrow{
+          width: 100%;
+          position: absolute;
+          top:45%;
+          font-size: 1.5em;
+          display: block;
+          transform: translateY(-50%);
+          text-align: center;
+        }
+      }
+
+      .prev-btn{
+        left: 10px;
+        opacity: .3;
+      }
+
+      .next-btn{
+        right: 10px;
+      }
+
+      .disable{
+        opacity:0.3;
+      }
+
+      .active{
+        opacity: 1;
+      }
+    }
+
+    .table-models-view-2 {
+      @include centerX;
+      .models-wrapper{
+        height: 100%;
+        display: grid;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        grid-template-columns: repeat(3, 1fr);
+      }
 
       .title {
         margin: 15px auto;
       }
 
+      .prev-btn,.next-btn{
+        display: none;
+      }
+
       .model {
-        width: 50%;
-        padding: 40px 20px;
+        padding-top: 1em;
         overflow: hidden;
-        box-shadow: 0 10px 10px rgba($light-grey, 0.5);
+        //box-shadow: 0 10px 10px rgba($light-grey, 0.5);
         position: relative;
         animation: .6s show-model linear;
 
-        .img-wrapper {
-          width: 45vw;
-          height: 20vw;
-          @include center;
+        .active{
+
         }
 
-        &:hover img {
-          opacity: .6;
-          width: 100%;
+        .inactive{
+
+        }
+        .img-wrapper {
+          @include centerX;
+        }
+
+        &:hover .car {
+          cursor: pointer;
+          transform: scale(1.1);
           transition: .5s all;
         }
 
@@ -142,12 +289,11 @@ a{
 
         .model-header {
           display: block;
-          text-align: center;
+          padding-left: 15px;
           font-family: $vw;
           font-size: 3rem;
           user-select: none;
           font-style: italic;
-          margin-bottom: 20px;
         }
 
         .btn-wrapper {
@@ -167,15 +313,29 @@ a{
           }
         }
 
-        img {
+        .car {
           width: 90%;
           transition: .5s all;
         }
 
       }
+    }
 
-      .preloader {
-        margin: 300px auto 0;
+    .preloader {
+      position: absolute;
+      left: 50%;
+      top:50%;
+      transform: translate(-50%,-50%);
+      //margin: 300px auto 0;
+    }
+
+    .btn-view{
+      width: 30px;
+      cursor: pointer;
+      transition: .2s all;
+      &:hover{
+        transition: .2s all;
+        transform: scale(1.2);
       }
     }
 
@@ -184,7 +344,8 @@ a{
   .preview {
     width: 100%;
     //height: 43vw;
-    height: 50vh;
+    //height: 50vh;
+    height: 50vw;
     video {
       width: 100vw;
       height: 100%;
@@ -269,10 +430,21 @@ a{
       }
     }
   }
+
+  .view-btn{
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+  }
+
+  .greeting{
+    margin-top: 15px;
+    @include centerX
+  }
 }
 
   .preloader {
-    @include center;
+    @include centerX;
 
     .loader {
       border: 8px solid $dark-blue;
