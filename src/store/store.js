@@ -42,7 +42,6 @@ const loadState = () => {
  */
 const oldState = loadState()
 
-
 export const store = createStore(
     rootReducer,
     oldState,

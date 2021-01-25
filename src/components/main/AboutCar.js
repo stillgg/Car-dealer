@@ -130,6 +130,8 @@ class AboutCar extends Component{
         const subModel = this.props.cars.tableData.changedSubModel
 
         const carInfo = this.props.cars.models[model][subModel]
+        console.log("1",model)
+        console.log("1",subModel)
         const bodyConfiguration = carInfo.configuration.body
         // const complictation = carInfo.complictation
         const icons = this.props.cars.aboutCar.iconsUrls

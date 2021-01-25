@@ -22,7 +22,9 @@ const initionalState = {
         changedModel: null,
         urls: null,
         viewMode: "type-1",
-        complictationInfo: false
+        complictationInfo: false,
+        specActive: 0,
+        showSpec: false
     },
 
     aboutCar:{

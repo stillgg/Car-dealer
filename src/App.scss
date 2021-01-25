@@ -120,84 +120,222 @@ a{
     }
 
     .table-models-view-1{
-      position: relative;
-      //background: radial-gradient(#fff,#000);
-      //height: 50vw;
-      background-size: cover;
-      //background: url("https://files.porsche.com/filestore/image/multimedia/none/modelseries-modelexplorer-backplate/normal/f2242816-9100-11ea-80c9-005056bbdc38;sN;twebp/porsche-normal.webp");
       box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5) inset;
       overflow: hidden;
+
       .models-wrapper{
-        height: 100%;
-        //transform: translateX(20%);
-        display:flex;
-        //align-items: center;
+        display: flex;
         transition: .5s all;
-      }
-
-      .car{
-        width: 55vw;
-        transition: .5s all;
-        margin-right: 10vw;
-        &:hover{
-          //transform: scale(1.1) translateX(35%);
-          transition: .5s all;
+        .model{
+          cursor: inherit;
         }
-      }
 
-      .model{
-        cursor: inherit;
-        .specifications{
-          overflow: hidden;
-          .complictation{
-            overflow: hidden;
-            .info{
-              display: block;
-              width: 40%;
-              border-bottom: 1px solid $grey;
-              padding: .7em;
-            }
+        .img-wrapper{
+          @include centerX;
+          width: 70vw;
+          .car{
+            width: 80%;
           }
-          .header{
+
+          @media (max-width: 576px) {
+
+          }
+        }
+
+        .model.active{
+          opacity: 1;
+          .info{
+            transform: translateY(0%);
+            transition: .5s transform;
+          }
+        }
+
+        .model.inactive{
+          opacity: .5;
+
+          .info {
+            transition: .25s transform;
+            transform: translateY(-1000%);
+          }
+
+          .specifications{
+            opacity: 0;
+          }
+
+          .btns-wrapper{
+            opacity: 0;
+          }
+
+          .btn-header{
+            display: none;
+          }
+
+        }
+
+        .model-header{
+          display: block;
+        }
+
+        .btns-wrapper{
+          opacity: 1;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+
+          .btn-spec, .btn-config{
+            display: block;
+            cursor: pointer;
+            border:1px solid $dark-blue;
+            padding: .5em;
+            width: 40%;
             position: relative;
-          }
-          .active{
-            .info{
-              transform: translateY(0%);
-              transition: .5s transform;
+            text-align: center;
+            transition: .25s background;
+            &:before{
+              content: "\203A";
+              position: absolute;
+              font-size: 1.5em;
+              left: 10px;
+              top: 45%;
+              transform: translateY(-50%);
             }
-          }
-          .inactive{
-            .info{
-              transition: .5s transform;
-              transform: translateY(-700%);
+            &:hover{
+              background: $dark-blue;
+              color: $white;
+              transition: .25s background;
             }
           }
         }
       }
 
-      .model.active{
+      .specifications{
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        background: $white;
+        overflow-x: hidden;
+        z-index: 10000000;
+        .complictations-wrapper{
+          h2{
+            width: 90vw;
+            margin: 1em auto 0;
+          }
+        }
+        .complictation{
+          width: 90vw;
+          margin:0 auto;
+          overflow: hidden;
+          justify-content: space-between;
+          .info-wrapper{
+            .info{
+              margin-top: 1em;
+              display: block;
+              border-bottom: 1px solid $grey;
+              .header{
+                width: 50%;
+                font-size: 2.5rem;
+                margin-bottom: .5em;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                .header-btn{
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 30px;
+                  height: 30px;
+                  transform: rotate(90deg);
+                  font-size: 1.2em;
+                  transition: .25s transform;
+                }
+              }
+              .active{
+                .header-btn{
+                  color:$red;
+                  transition: .25s transform;
+                  transform: rotate(270deg);
+                }
+              }
+              .model-spec{
+                display: none;
+              }
+              .active~.model-spec{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding-bottom: 10px;
+              }
+
+            }
+          }
+        }
+
+        .header{
+          position: relative;
+        }
+
+        .spec-header{
+          padding-top: 1.5em;
+          padding-bottom: 1.5em;
+          padding-left: 1em;
+          background: $light-grey;
+          .txt{
+            font-size: 4rem;
+            font-weight: bold;
+          }
+        }
+
+        .btn-close{
+          width: 55px;
+          height: 55px;
+          background: $red;
+          box-shadow: 5px 5px 5px -2.5px rgba(0,0,0,.2);
+          cursor: pointer;
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          z-index: 10000000;
+          &:before{
+            content: "\2716";
+            position: absolute;
+            font-size: 1em;
+            color: $white;
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+          }
+        }
+
+
+      }
+
+      .specifications.active{
+        transform: translateY(0%);
+        transition: .5s all;
         opacity: 1;
+
+      }
+
+      .specifications.false{
         .info{
           transform: translateY(0%);
-          transition: .5s transform;
+          transition: .25s transform;
         }
       }
-      .model.inactive{
-        opacity: .5;
+
+      .specifications.inactive{
+        transform: translateY(100%);
+        transition: .5s all;
+        opacity: 0;
+      }
+
+      .specifications.true{
         .info {
-          transition: .5s transform;
-          transform: translateY(-700%);
+          transition: .4s transform;
+          transform: translateY(-1000%);
         }
-        .specifications{
-          opacity: 0;
-        }
-        .btn-header{
-          display: none;
-        }
-      }
-      .model-header{
-        display: block;
       }
 
       .prev-btn,.next-btn{
@@ -211,6 +349,7 @@ a{
         color: white;
         user-select: none;
         cursor: pointer;
+
         .arrow{
           width: 100%;
           position: absolute;
@@ -220,6 +359,7 @@ a{
           transform: translateY(-50%);
           text-align: center;
         }
+
       }
 
       .prev-btn{
@@ -261,17 +401,9 @@ a{
       .model {
         padding-top: 1em;
         overflow: hidden;
-        //box-shadow: 0 10px 10px rgba($light-grey, 0.5);
         position: relative;
         animation: .6s show-model linear;
 
-        .active{
-
-        }
-
-        .inactive{
-
-        }
         .img-wrapper {
           @include centerX;
         }
@@ -466,7 +598,6 @@ a{
   .slider {
     width: 100%;
     height: 50vw;
-    //margin: 2em auto 0;
     position: relative;
     overflow: hidden;
 
@@ -521,42 +652,6 @@ a{
       animation: .5s show-model linear;
     }
   }
-
-  //@keyframes gra {
-  //  0% {
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 0%, $grey 100%);
-  //  }
-  //  10%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 10%, $grey 100%);
-  //  }
-  //  20%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 20%, $grey 100%);
-  //  }
-  //  30%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 30%, $grey 100%);
-  //  }
-  //  40%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 40%, $grey 100%);
-  //  }
-  //  50% {
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 50%, $grey 100%);
-  //  }
-  //  60%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 60%, $grey 100%);
-  //  }
-  //  70%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 70%, $grey 100%);
-  //  }
-  //  80%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 80%, $grey 100%);
-  //  }
-  //  90%{
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 90%, $grey 100%);
-  //  }
-  //  100% {
-  //    background: linear-gradient(90deg, $grey 0%, rgba(255,255,255,1) 100%, $grey 100%);
-  //  }
-  //}
 
   @keyframes gra {
     0% {
