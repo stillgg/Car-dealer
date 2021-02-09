@@ -1,9 +1,13 @@
 import {
-    GET_CARS_JSON, GET_IMG_URL_SLIDER,
-    HANDLE_LOADER, UPDATE_SLIDER
+    GET_CARS_JSON, GET_IMG_URL_SLIDER_BODY_SALON,
+    HANDLE_LOADER, UPDATE_SLIDER_BODY_SALON
 } from "../types/types"
 import {firebaseStorage} from "../../index"
-import {GET_NEXT_IMG_URL_SLIDER, UPDATE_IMG_SLIDER} from "../types/aboutCarTypes"
+
+import {
+    GET_NEXT_IMG_URL_SLIDER,
+    UPDATE_IMG_SLIDER_BODY
+} from "../types/aboutCarTypes"
 
 export const getCarsJSON = () => {
     return async dispatch => {
@@ -30,43 +34,49 @@ export const handleLoader = value => (
     }
 )
 
-export const updateSlider = conf => (
+export const updateSlider = (conf,typeSlider) => (
     {
-        type: UPDATE_SLIDER,
-        payload: conf
+        type: UPDATE_SLIDER_BODY_SALON,
+        payload: conf,
+        typeSlider
     }
 )
 
-export const getImgSlider = (model,subModel,conf) =>{
+export const getImgSlider = (model,subModel,conf,iconSelect,typeSlider) =>{
     return async dispatch =>{
         const response = await firebaseStorage.ref().child(
-            `/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/result/body`
+            `/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/result/${typeSlider}`
             // `/cars/image/constructor/Maserati/maserati-Levante/result/body`
         )
-
         const list = await response.listAll()
 
         const imgUrls = []
 
+        const confStr = getStrConf(conf,iconSelect)
+
         dispatch(
             {
-                type: GET_IMG_URL_SLIDER,
-                loader : false
+                type: GET_IMG_URL_SLIDER_BODY_SALON,
+                loader : false,
+                typeSlider
             }
         )
 
         for (const item of list.items){
-            if( item.location.path.includes(conf) ){
+            if( item.location.path.includes(confStr) ){
                 const url = await item.getDownloadURL()
                 imgUrls.push(url)
             }
         }
 
+        console.log("imgUrls",imgUrls)
+
         setTimeout(()=>dispatch(
             {
-                type: GET_IMG_URL_SLIDER,
+                type: GET_IMG_URL_SLIDER_BODY_SALON,
                 loader: true,
-                payload : imgUrls
+                payload : imgUrls,
+                typeSlider
             }
         ),200)
 
@@ -109,10 +119,22 @@ export const getNextImgSlider = (model,subModel,conf, prevImgUrls) =>{
     }
 }
 
-export const updateImgSlider = (obj)=>({
-    type: UPDATE_IMG_SLIDER,
+export const updateImgSlider = obj=>({
+    type: UPDATE_IMG_SLIDER_BODY,
     payload: obj
 })
 
 
+const getStrConf = (confBody,iconSelect) =>{
 
+    let key = ''
+
+    for(const i in confBody){
+        const confArr = confBody[i]
+        const id = iconSelect===null? 0 : iconSelect[i]
+
+        key+=confArr[id] + '_'
+    }
+
+    return key.slice(0,-1)
+}

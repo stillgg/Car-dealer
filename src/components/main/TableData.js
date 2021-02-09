@@ -81,7 +81,7 @@ class TableData extends Component{
 
 }
 
-const mapStateToProps = (state) => state
+const mapStateToProps = state => state
 
 const mapDispatchToProps = {
     getCarsJSON,

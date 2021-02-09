@@ -1,7 +1,7 @@
 import {
-    CHANGE_ICON_SELECT,
-    CHANGE_OPTION_SELECT,
-    GET_ICONS_ABOUT_CAR,
+    CHANGE_ICON_SELECT_BODY_SALON,
+    CHANGE_OPTION_SELECT_BODY,
+    GET_ICONS_BODY_SALON_ABOUT_CAR,
     GET_INFO_ABOUT_CAR,
     UPDATE_ABOUT_CAR
 } from "../types/aboutCarTypes"
@@ -51,7 +51,7 @@ export const getIcons = (model,subModel)=>{
 
             dispatch(
                 {
-                    type: GET_ICONS_ABOUT_CAR,
+                    type: GET_ICONS_BODY_SALON_ABOUT_CAR,
                     loader: true
                 }
             )
@@ -71,14 +71,14 @@ export const getIcons = (model,subModel)=>{
             const iconSelect = {
             }
 
+
             for(const key of Object.keys(result)){
                 iconSelect[key] = 0
             }
 
-
             dispatch(
                 {
-                    type: GET_ICONS_ABOUT_CAR,
+                    type: GET_ICONS_BODY_SALON_ABOUT_CAR,
                     loader: false,
                     payload: result,
                     iconSelect
@@ -98,16 +98,18 @@ export const updateAboutCar = conf =>{
     }
 }
 
-export const changeOptionSelect = optionSelect => {
+export const changeOptionSelect = (optionSelect,typeSlider) => {
     return{
-        type: CHANGE_OPTION_SELECT,
-        payload: optionSelect
+        type: CHANGE_OPTION_SELECT_BODY,
+        // payload: optionSelect
+        payload: optionSelect,
+        typeSlider
     }
 }
 
 export const changeIconSelect = iconSelect =>{
     return{
-        type: CHANGE_ICON_SELECT,
+        type: CHANGE_ICON_SELECT_BODY_SALON,
         payload: iconSelect
     }
 }
