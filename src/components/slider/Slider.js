@@ -37,14 +37,8 @@ class Slider extends Component {
         const conf = this.props.models[model][subModel].configuration[type]
 
         const iconSelect = this.resetSelect(
-            // this.props.aboutCar.iconSelect
             this.props.slider.iconSelect
         )
-        // console.log("model",model)
-        // console.log("submodel",subModel)
-        // console.log(confBody)
-
-        // console.log("iconSelect",iconSelect)
 
         this.props.getImgSlider(model,subModel,conf,iconSelect,type)
     }

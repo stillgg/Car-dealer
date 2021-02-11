@@ -3,25 +3,32 @@ import PreloaderV2 from "../../preloaders/PreloaderV2"
 
 class ConfPanel extends React.Component{
 
-    imgSliderHandler(state,type){
+    imgSliderHandler(state,type,key){
         const model = state.tableData.changedModel
         const subModel = state.tableData.changedSubModel
 
         const conf = state.models[model][subModel].configuration[type]
-
-        console.log("type2",type)
 
         this.props.updateSlider(
             {prevImgUrls: state.slider[type].imgUrls},
             type
         )
 
-        // const iconSelect = state.aboutCar.iconSelect
         const iconSelect = state.slider.iconSelect
-        console.log("iconSelect1",iconSelect)
+
+        const confSalon = state.models[model][subModel].configuration.salon
+
+        if(key === "background"){
+            this.props.getImgSlider(
+                model,subModel,
+                confSalon,iconSelect,
+                "salon"
+            )
+        }
 
         this.props.getImgSlider(model,subModel,conf,iconSelect,type)
     }
+
     optionClickHandler(targetNode,nodeList,optionSelect,type){
         for(const node of nodeList){
 
@@ -34,11 +41,8 @@ class ConfPanel extends React.Component{
         }
         this.props.changeOptionSelect(optionSelect,type)
     }
-    iconClickHandler(state,targetNode,nodeList,configuration,iconSelect,type){
-        // const optionSelect = state.aboutCar.optionSelect
-        const optionSelect = state.slider[type].optionSelect
 
-        const key = Object.keys(configuration)[optionSelect]
+    iconClickHandler(targetNode,nodeList,iconSelect,type,val){
 
         for(const node of nodeList){
 
@@ -52,14 +56,53 @@ class ConfPanel extends React.Component{
 
         this.props.changeIconSelect(
             {
-                [key] :iconSelect
+                [val] :iconSelect
             },
             type
         )
 
     }
-    iconPanelHandler(configuration,optionSelect){
+
+    getKey(configuration,optionSelect){
         return Object.keys(configuration)[optionSelect]
+        // const result = []
+        //
+        // switch (type) {
+        //     case "body":
+        //         for (const i of keys) {
+        //             if (i === "seats") {
+        //                 continue
+        //             }
+        //             result.push(i)
+        //         }
+        //         break
+        //
+        //     case "salon":
+        //         for (const i of keys) {
+        //             if (i === "background") {
+        //                 continue
+        //             }
+        //             result.push(i)
+        //         }
+        //         break
+        //
+        //     default:
+        //         break
+        // }
+        //
+        // return result
+    }
+
+    getOptionsArr(configuration,type){
+        const conf = Object.keys(configuration)
+
+        switch (type) {
+            case "salon":
+                return conf.filter(item => item !== "background")
+
+            default:
+                return conf.filter(item => item !== "seats")
+        }
     }
 
     render(props) {
@@ -70,75 +113,76 @@ class ConfPanel extends React.Component{
 
         const carInfo = state.models[model][subModel]
         const configuration = carInfo.configuration[type]
-        // const optionSelect = state.aboutCar.optionSelect
         const optionSelect = state.slider[type].optionSelect
-        // const icons = state.aboutCar.iconsUrls
-        // const iconSelect = state.aboutCar.iconSelect
         const icons = state.slider.iconsUrls
 
         const iconSelect = state.slider.iconSelect
-        console.log("configuration",carInfo.configuration)
+
+        const optionsArr = this.getOptionsArr(configuration,type)
+
         return(
             <React.Fragment>
                 <ul className="options">
                     {
-                        Object.keys(configuration).map(
+                        optionsArr.map(
                             (item, index) => {
-                                console.log("optionSelect",optionSelect)
-                                console.log("type",type)
-                                    return (
-                                        <li key={index}
-                                            className={`option ${index === optionSelect?"active":""}`}
-                                            onClick={(e) => {
-                                                this.optionClickHandler(
-                                                    e.target,
-                                                    e.target.parentNode.children,
-                                                    index,
-                                                    type
-                                                )
-                                            }}
-                                        >
-                                            {item}
-                                        </li>
-                                    )
-                                })
+
+                                return (
+                                    <li key={index}
+                                        className={`option ${index === optionSelect ? "active" : ""}`}
+                                        onClick={(e) => {
+                                            this.optionClickHandler(
+                                                e.target,
+                                                e.target.parentNode.children,
+                                                index,
+                                                type
+                                            )
+                                        }}
+                                    >
+                                        {item}
+                                    </li>
+                                )
+                            })
                     }
                 </ul>
                 <ul className="icons-panel">
                     {
                         icons ?
-                            icons[this.iconPanelHandler(configuration, optionSelect)]
+                            icons[ optionsArr[optionSelect] ]
                                 .map((item, index) => {
-                                        const key = Object.keys(configuration)[optionSelect]
-                                        // console.log("key",iconSelect)
-                                        const activeIconEl = iconSelect[key]
+                                    const key = this.getKey(
+                                        configuration,
+                                        optionSelect,
+                                        type
+                                    )
 
-                                            return (
-                                                <li className={`icon ${index === activeIconEl?"active":""}`}
-                                                    key={index}
-                                                    onClick={ async e=> {
+                                    const activeIconEl = iconSelect[optionsArr[optionSelect]]
 
-                                                        if(index === activeIconEl){
-                                                            return
-                                                        }
+                                    return (
+                                        <li className={`icon ${index === activeIconEl ? "active" : ""}`}
+                                            key={index}
+                                            onClick={async e => {
 
-                                                        await this.iconClickHandler(
-                                                            state, //state before click
-                                                            e.target,
-                                                            e.target.parentNode.children,
-                                                            configuration,
-                                                            index,
-                                                            type
-                                                        )
+                                                if (index === activeIconEl) {
+                                                    return
+                                                }
 
-                                                        const stateAfterClick = this.props.state
+                                                await this.iconClickHandler(
+                                                    e.target,
+                                                    e.target.parentNode.children,
+                                                    index,
+                                                    type,
+                                                    optionsArr[optionSelect]
+                                                )
 
-                                                        this.imgSliderHandler(stateAfterClick,type)
-                                                    }}>
-                                                    <img src={`${item}`} alt="icon"/>
-                                                </li>
-                                            )
-                                    }
+                                                const stateAfterClick = this.props.state
+
+                                                this.imgSliderHandler(stateAfterClick, type, key)
+                                            }}>
+                                            <img src={`${item}`} alt="icon"/>
+                                        </li>
+                                    )
+                                }
                                 ) :
                             <div style={{
                                 width: "100%",

@@ -130,7 +130,7 @@ a{
       flex-wrap: wrap;
       justify-content: space-evenly;
       padding-bottom: .5rem;
-
+      //box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5);
       .car, .active-car {
         @include centerX;
         cursor: pointer;
@@ -182,7 +182,9 @@ a{
     .table-models-view-1{
       box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5) inset;
       overflow: hidden;
-
+      //position: absolute;
+      //top: 50%;
+      //transform: translateY(-50%);
       .models-wrapper{
         display: flex;
         transition: .5s all;
@@ -648,13 +650,12 @@ a{
 
     .icons-panel {
       display: flex;
-      cursor: pointer;
       user-select: none;
 
       .icon {
         margin: .5em;
         position: relative;
-
+        cursor: pointer;
         img {
           border: 1px solid #ddd;
           width: 48px;
