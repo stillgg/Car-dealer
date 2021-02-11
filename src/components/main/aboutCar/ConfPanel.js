@@ -16,6 +16,7 @@ class ConfPanel extends React.Component{
 
         const iconSelect = state.slider.iconSelect
 
+        const confBody = state.models[model][subModel].configuration.body
         const confSalon = state.models[model][subModel].configuration.salon
 
         if(key === "background"){
@@ -23,6 +24,14 @@ class ConfPanel extends React.Component{
                 model,subModel,
                 confSalon,iconSelect,
                 "salon"
+            )
+        }
+
+        if(key === "seats"){
+            this.props.getImgSlider(
+                model,subModel,
+                confBody,iconSelect,
+                "body"
             )
         }
 
@@ -113,11 +122,11 @@ class ConfPanel extends React.Component{
 
         const carInfo = state.models[model][subModel]
         const configuration = carInfo.configuration[type]
-        const optionSelect = state.slider[type].optionSelect
-        const icons = state.slider.iconsUrls
 
+        const icons = state.slider.iconsUrls
         const iconSelect = state.slider.iconSelect
 
+        const optionSelect = state.slider[type].optionSelect
         const optionsArr = this.getOptionsArr(configuration,type)
 
         return(
@@ -177,7 +186,8 @@ class ConfPanel extends React.Component{
 
                                                 const stateAfterClick = this.props.state
 
-                                                this.imgSliderHandler(stateAfterClick, type, key)
+                                                //this.imgSliderHandler(stateAfterClick, type, key, optionsArr[optionSelect])
+                                                this.imgSliderHandler(stateAfterClick, type, optionsArr[optionSelect])
                                             }}>
                                             <img src={`${item}`} alt="icon"/>
                                         </li>

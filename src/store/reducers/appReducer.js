@@ -128,7 +128,7 @@ export const appReducer = (state=initionalState, action)=>{
             }
 
         case UPDATE_SLIDER_BODY_SALON:
-            console.log("action",action.typeSlider)
+
             return {
                 ...state,
                 slider: {
@@ -181,18 +181,9 @@ export const appReducer = (state=initionalState, action)=>{
                 preloader:action.preloader,
                 slider:{
                     ...state.slider,
-                    // body:{
-                    //     ...state.slider.body,
-                    //     iconSelect: action.iconSelect,
-                    // },
                     iconSelect: action.iconSelect,
                     iconsUrls: action.payload
                 }
-                // aboutCar: {
-                //     ...state.aboutCar,
-                //     iconsUrls: action.payload,
-                //     iconSelect: action.iconSelect
-                // }
             }
 
         case UPDATE_ABOUT_CAR:
@@ -217,27 +208,13 @@ export const appReducer = (state=initionalState, action)=>{
                         optionSelect: action.payload
                     }
                 }
-                // aboutCar: {
-                //     ...state.aboutCar,
-                //     optionSelect: action.payload
-                // }
             }
 
         case CHANGE_ICON_SELECT_BODY_SALON:
             return {
                 ...state,
-                // aboutCar: {
-                //     ...state.aboutCar,
-                //     // iconSelect: {
-                //     //     ...state.aboutCar.iconSelect,
-                //     //     ...action.payload
-                //     // }
-                // },
                 slider: {
                     ...state.slider,
-                    // body:{
-                    //     ...state.slider.body,
-                    // }
                     iconSelect: {
                         ...state.slider.iconSelect,
                         ...action.payload
@@ -275,7 +252,7 @@ export const appReducer = (state=initionalState, action)=>{
         default:
             return {
                 ...state,
-                loader: false,
+                loader: false
             }
     }
 }
