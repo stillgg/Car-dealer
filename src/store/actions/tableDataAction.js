@@ -8,6 +8,7 @@ import {
 } from "../types/tableDataTypes"
 
 import {firebaseStorage} from "../../index"
+import {RESET_SLIDER_TYPE1} from "../types/types"
 
 export const changeSubModel = subModel =>({
     type: CHANGE_SUBMODEL,
@@ -64,6 +65,15 @@ export const updateSliderType1 = conf => {
         payload: conf
     }
 }
+
+export const resetSliderType1 = ()=>({
+    type: RESET_SLIDER_TYPE1,
+    payload: {
+        pos: 0,
+        touchStart: 0,
+        touchMovePos: 0
+    }
+})
 
 export const changeTableData = conf =>{
     return(

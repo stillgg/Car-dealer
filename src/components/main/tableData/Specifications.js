@@ -86,7 +86,24 @@ const Specifications = props =>{
                                         <ul className="model-spec">
                                             {conf.map((item)=>{
                                                 return(
-                                                    <li className="model-spec-info">{item}:{compl[item]}</li>
+                                                    <li className="model-spec-info">
+                                                        <span className="header-spec-info">
+                                                            {`${props.getPostfixItemSpecInfo(item)
+                                                                ?
+                                                                props.getPostfixItemSpecInfo(item).name
+                                                                :
+                                                                {item}} :`
+                                                            }
+                                                        </span>
+                                                        <span className="item-spec-info">
+                                                            {props.getPostfixItemSpecInfo(item)
+                                                                ?
+                                                                `${compl[item]} ${props.getPostfixItemSpecInfo(item).postfix}`
+                                                                :
+                                                                `${compl[item]}`
+                                                            }
+                                                        </span>
+                                                    </li>
                                                 )
                                             })}
                                         </ul>

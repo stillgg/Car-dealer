@@ -42,7 +42,11 @@ export const getIcons = (model,subModel)=>{
 
     return async dispatch =>{
         try{
-            const response = await firebaseStorage.ref().child(`/cars/image/constructor/${model}/${model.toLowerCase()}-${subModel}/icons`)
+            const response = await firebaseStorage.ref().child(
+                `/cars/image/constructor/${model}/${model==="Maserati"?model.toLowerCase()+"-":""}${subModel}/icons`
+            )
+            // const response = await firebaseStorage.ref().child(`/cars/image/constructor/${model}/${subModel}/icons`)
+
             const list = await response.listAll()
 
             const result = {

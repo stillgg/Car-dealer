@@ -1,5 +1,5 @@
 import React from "react"
-import {NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom"
 
 const LogosRow = (props) =>{
     const modelsArr = props.modelsArr
@@ -18,7 +18,6 @@ const LogosRow = (props) =>{
                                  }
 
                                  onClick={async () => {
-
                                      if(changedModel === item){
                                          return
                                      }

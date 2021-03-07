@@ -1,10 +1,14 @@
 import React from "react"
-import {Link} from "react-router-dom"
+// import {Link} from "react-router-dom"
 import ModelsWrapper from "./ModelsWrapper"
-import {changeModel} from "../../../store/actions/tableDataAction";
-import Specifications from "./Specifications";
+// import {changeModel} from "../../../store/actions/tableDataAction";
+import Specifications from "./Specifications"
 
 class TableModels extends React.Component{
+    componentWillUnmount() {
+        this.props.resetSliderType1()
+    }
+
     roundWidth(clientX,width){
         return Math.round(clientX/width*10)/10
     }
@@ -18,7 +22,7 @@ class TableModels extends React.Component{
     }
 
     nextSliderBtnHandler(length,pos){
-        if(pos === length+1){
+        if(pos+1 === length){
             return this.props.updateSliderType1
         }
         return this.props.updateSliderType1(
@@ -73,6 +77,33 @@ class TableModels extends React.Component{
         this.props.updateSliderType1({touchMovePos})
     }
 
+    getPostfixItemSpecInfo(type){
+        const obj = {
+            boost: {
+                name: "разгон 0-100 км/ч",
+                postfix:"c"
+            },
+            maxSpeed: {
+                name: "максимальная скорость",
+                postfix: "км/ч",
+            },
+            power: {
+                name: "мощность",
+                postfix: "л.с."
+            },
+            Engine: {
+                name: "двигатель",
+                postfix: ""
+            },
+            ed: {
+                name: "объём двигателя",
+                postfix: "л"
+            }
+        }
+
+        return obj[type]
+    }
+
     render(){
         const props = this.props
         const state = props.state
@@ -85,7 +116,7 @@ class TableModels extends React.Component{
         const slider = state.sliderType1
         const changedModel = state.tableData.changedModel
 
-        const modelsArr = props.modelsArr
+        const modelsArr = Object.keys(state.models[changedModel])
 
 
         return(
@@ -119,7 +150,7 @@ class TableModels extends React.Component{
                     <span className={"arrow"}>&lsaquo;</span>
                 </div>
 
-                <div className={`next-btn ${pos === modelsArr.length + 1 ? "disable" : "active"}`}
+                <div className={`next-btn ${pos+1 === modelsArr.length ? "disable" : "active"}`}
                      onClick={() =>{
                          this.nextSliderBtnHandler(modelsArr ? modelsArr.length : 0,pos)
                      }}
@@ -143,6 +174,7 @@ class TableModels extends React.Component{
                 <Specifications
                     state={state}
                     changeTableData={props.changeTableData}
+                    getPostfixItemSpecInfo={this.getPostfixItemSpecInfo}
                 />
 
             </div>

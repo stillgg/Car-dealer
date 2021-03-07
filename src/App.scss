@@ -196,9 +196,19 @@ a{
           @include centerX;
           width: 70vw;
           height: auto;
-          .car{
-            width: 55vw;
-            height: 27.5vw;
+          //.car{
+          //  width: 55vw;
+          //  height: 27.5vw;
+          //}
+          .Maserati{
+            width: 50vw;
+            height: 25vw;
+            margin-top: 5vw;
+            margin-bottom: 3.75vw;
+          }
+          .Porshe{
+            width: 60vw;
+            height: 33.75vw;
           }
         }
 
@@ -261,7 +271,7 @@ a{
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          margin-top: 1.5rem;
+          //margin-top: 1.5rem;
           .btn-spec, .btn-config{
             display: block;
             cursor: pointer;
@@ -385,8 +395,13 @@ a{
               .active~.model-spec{
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: space-between;
-                padding-bottom: 10px;
+                .model-spec-info{
+                  margin-right: 3rem;
+                  .header-spec-info{
+                    margin-right: 1rem;
+                  }
+                }
+
               }
 
             }
@@ -468,8 +483,8 @@ a{
 
       .specifications.false{
         .info {
-          transition: .4s transform;
-          transform: translateY(-1000%);
+          transition: .7s transform;
+          transform: translateY(-4000%);
         }
       }
 
@@ -610,18 +625,30 @@ a{
   }
 
   .preview {
+    top: 0;
     width: 100%;
     //height: 43vw;
     //height: 50vh;
+
+    //opacity: .5;
     height: 100vh;
+
+
     video {
+      top: 0;
+      position: absolute;
       width: 100vw;
       height: 100%;
       object-fit: cover;
+      z-index: -1;
     }
   }
 
   .constructor {
+    position: absolute;
+    top: 100vh;
+    left: 50%;
+    transform: translateX(-50%);
     .main {
       width: 90vw;
       margin: 0 auto;
@@ -629,7 +656,7 @@ a{
 
     .options {
       width: 100%;
-      background: $light-grey;
+      //background: $light-grey;
       display: flex;
 
       .option {
@@ -644,7 +671,7 @@ a{
 
       .active {
         font-weight: bold;
-        background: white;
+        background: rgba(255,255,255,.5);
       }
     }
 
@@ -736,6 +763,33 @@ a{
     position: relative;
     overflow: hidden;
 
+    .widgets{
+      opacity: 1;
+      transition: .5s opacity;
+      position: absolute;
+      width: 100%;
+      height: 50px;
+      z-index: 1000;
+      top: 100%;
+      transform: translateY(-100%);
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .widget{
+        z-index: 1000;
+        transition: .2s opacity;
+        cursor: pointer;
+        width: 45px;
+        height: 45px;
+        //opacity: 0;
+      }
+      //transform: translateY(90%);
+    }
+
+    &:hover .widget{
+      //opacity: 1;
+      //transition: .5s opacity;
+    }
     &:hover .prev {
       opacity: 1;
       transition: .5s opacity;

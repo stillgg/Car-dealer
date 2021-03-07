@@ -1,9 +1,9 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
 import {
-    getImgSlider,
+    getImgSlider, getWidgetsImg, resetSlider,
     updateImgSlider,
-    updateSlider
+    updateSlider, updateWidgets, updateWidgetsSelect
 } from "../../store/actions/actions"
 
 import {
@@ -15,11 +15,15 @@ import {
 
 import PreloaderV2 from "../preloaders/PreloaderV2"
 import ConfPanel from "../main/aboutCar/ConfPanel"
+import Widgets from "../main/aboutCar/Widgets"
 
 
 class Slider extends Component {
     componentDidMount() {
         this.getStrDefaultBodyConfiguration()
+    }
+    componentWillUnmount() {
+        this.props.resetSlider()
     }
 
     resetSelect(iconSelect){
@@ -36,11 +40,18 @@ class Slider extends Component {
         const type = this.props.type
         const conf = this.props.models[model][subModel].configuration[type]
 
+        const widgets = this.props.models[model][subModel].configuration.widgets
+
+        const widgetsSelect = this.resetSelect(
+            this.props.slider.widgetsSelect
+        )
+
         const iconSelect = this.resetSelect(
             this.props.slider.iconSelect
         )
 
-        this.props.getImgSlider(model,subModel,conf,iconSelect,type)
+
+        this.props.getImgSlider(model,subModel,conf,iconSelect,type,widgets,widgetsSelect)
     }
 
     prevHandler(pos,type){
@@ -131,7 +142,13 @@ class Slider extends Component {
 
     render() {
         const type = this.props.type
-        const state = this.props.cars
+        const state = this.props
+
+        const model = state.tableData.changedModel
+        const subModel = state.tableData.changedSubModel
+
+        const carInfo = state.models[model][subModel]
+        const configuration = carInfo.configuration[type]
 
         const sliderImgs = this.props.slider[type].imgUrls
 
@@ -151,6 +168,13 @@ class Slider extends Component {
 
         const X1 = this.props.slider[type].X1
 
+        const widgets = carInfo.configuration.widgets
+
+        const widgetsSelect = this.props.slider.widgetsSelect
+        const widgetsUrls = this.props.slider.widgetsUrls
+
+        const iconSelect = this.props.slider.iconSelect
+
         switch (pos) {
             case sliderLength:
                 next = "disable"
@@ -160,6 +184,10 @@ class Slider extends Component {
                 break
             default:
                 break
+        }
+
+        if(!configuration){
+            return <React.Fragment></React.Fragment>
         }
 
         return (
@@ -204,6 +232,26 @@ class Slider extends Component {
                         }
                     >&rsaquo;</div>
 
+
+                    {
+                        widgets?
+                            <Widgets
+                                widgets={widgets}
+                                getWidgetsImg={this.props.getWidgetsImg}
+                                model={model}
+                                subModel={subModel}
+                                widgetsSelect={widgetsSelect}
+                                widgetsUrls={widgetsUrls}
+                                updateWidgetsSelect={this.props.updateWidgetsSelect}
+                                getImgSlider={this.props.getImgSlider}
+                                conf={configuration}
+                                iconSelect={iconSelect}
+                                type={type}
+                            />:
+                            false
+                    }
+
+
                     {
                         sliderImgs?
                             sliderImgs.map((item, id) => {
@@ -229,6 +277,8 @@ class Slider extends Component {
                     updateSlider={this.props.updateSlider}
                     getImgSlider={this.props.getImgSlider}
                     changeOptionSelect={this.props.changeOptionSelect}
+                    widgets={widgets}
+                    widgetsSelect={widgetsSelect}
                 />
             </React.Fragment>
         )
@@ -242,7 +292,10 @@ const mapDispatchToProps = {
     getImgSlider,
     updateImgSlider,
     changeIconSelect,
-    changeOptionSelect
+    changeOptionSelect,
+    resetSlider,
+    getWidgetsImg,
+    updateWidgetsSelect
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Slider)

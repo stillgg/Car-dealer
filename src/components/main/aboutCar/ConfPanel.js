@@ -3,7 +3,7 @@ import PreloaderV2 from "../../preloaders/PreloaderV2"
 
 class ConfPanel extends React.Component{
 
-    imgSliderHandler(state,type,key){
+    imgSliderHandler(state,type,key,widgets,widgetsSelect){
         const model = state.tableData.changedModel
         const subModel = state.tableData.changedSubModel
 
@@ -23,7 +23,7 @@ class ConfPanel extends React.Component{
             this.props.getImgSlider(
                 model,subModel,
                 confSalon,iconSelect,
-                "salon"
+                "salon",widgets,widgetsSelect
             )
         }
 
@@ -31,11 +31,11 @@ class ConfPanel extends React.Component{
             this.props.getImgSlider(
                 model,subModel,
                 confBody,iconSelect,
-                "body"
+                "body",widgets,widgetsSelect
             )
         }
 
-        this.props.getImgSlider(model,subModel,conf,iconSelect,type)
+        this.props.getImgSlider(model,subModel,conf,iconSelect,type,widgets,widgetsSelect)
     }
 
     optionClickHandler(targetNode,nodeList,optionSelect,type){
@@ -114,6 +114,18 @@ class ConfPanel extends React.Component{
         }
     }
 
+    getStrOptionName(type){
+        const obj = {
+            background: "цвет",
+            wheels: "диски",
+            supports: "суппорта",
+            seats: "экстерьер",
+            roof: "крыша"
+        }
+
+        return obj[type]? obj[type] : ""
+    }
+
     render(props) {
         const type = this.props.type
         const state = this.props.state
@@ -127,7 +139,11 @@ class ConfPanel extends React.Component{
         const iconSelect = state.slider.iconSelect
 
         const optionSelect = state.slider[type].optionSelect
+
         const optionsArr = this.getOptionsArr(configuration,type)
+
+        const widgets = this.props.widgets
+        const widgetsSelect = this.props.widgetsSelect
 
         return(
             <React.Fragment>
@@ -148,7 +164,7 @@ class ConfPanel extends React.Component{
                                             )
                                         }}
                                     >
-                                        {item}
+                                        {this.getStrOptionName(item)}
                                     </li>
                                 )
                             })
@@ -157,43 +173,43 @@ class ConfPanel extends React.Component{
                 <ul className="icons-panel">
                     {
                         icons ?
-                            icons[ optionsArr[optionSelect] ]
-                                .map((item, index) => {
-                                    const key = this.getKey(
-                                        configuration,
-                                        optionSelect,
-                                        type
-                                    )
+                            icons[optionsArr[optionSelect]] ?
+                                icons[optionsArr[optionSelect]].map((item, index) => {
 
-                                    const activeIconEl = iconSelect[optionsArr[optionSelect]]
+                                        const activeIconEl = iconSelect[optionsArr[optionSelect]]
 
-                                    return (
-                                        <li className={`icon ${index === activeIconEl ? "active" : ""}`}
-                                            key={index}
-                                            onClick={async e => {
+                                        return (
+                                            <li className={`icon ${index === activeIconEl ? "active" : ""}`}
+                                                key={index}
+                                                onClick={async e => {
 
-                                                if (index === activeIconEl) {
-                                                    return
-                                                }
+                                                    if (index === activeIconEl) {
+                                                        return
+                                                    }
 
-                                                await this.iconClickHandler(
-                                                    e.target,
-                                                    e.target.parentNode.children,
-                                                    index,
-                                                    type,
-                                                    optionsArr[optionSelect]
-                                                )
+                                                    await this.iconClickHandler(
+                                                        e.target,
+                                                        e.target.parentNode.children,
+                                                        index,
+                                                        type,
+                                                        optionsArr[optionSelect]
+                                                    )
 
-                                                const stateAfterClick = this.props.state
+                                                    const stateAfterClick = this.props.state
 
-                                                //this.imgSliderHandler(stateAfterClick, type, key, optionsArr[optionSelect])
-                                                this.imgSliderHandler(stateAfterClick, type, optionsArr[optionSelect])
-                                            }}>
-                                            <img src={`${item}`} alt="icon"/>
-                                        </li>
-                                    )
-                                }
-                                ) :
+                                                    this.imgSliderHandler(
+                                                        stateAfterClick, type,
+                                                        optionsArr[optionSelect],
+                                                        widgets,widgetsSelect
+                                                    )
+                                                }}>
+                                                <img src={`${item}`} alt="icon"/>
+                                            </li>
+                                        )
+                                    }
+                                )
+                                : false
+                            :
                             <div style={{
                                 width: "100%",
                                 height: "50px"

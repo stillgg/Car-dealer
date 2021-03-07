@@ -8,7 +8,6 @@ const ModelsWrapper = props =>{
     const changedModel = props.changedModel
     const slider = props.slider
     const changedViewMode = state.tableData.viewMode
-    // const complictationInfo = !state.tableData.complictationInfo
 
     return(
         <div className="models-wrapper"
@@ -24,7 +23,7 @@ const ModelsWrapper = props =>{
                     const subModels = Object.keys(models[changedModel])
                     const aboutCarPath = props.getModel(subModels, index)
                     const complictation = props.getComplictation(models,changedModel,subModels[index])
-                    const complictationKeys = Object.keys(complictation)
+                    // const complictationKeys = Object.keys(complictation)
 
                     return (
                         <Link
@@ -49,7 +48,7 @@ const ModelsWrapper = props =>{
                                 //     width: "50vw"
                                 // }}
                             >
-                                <img className={"car"} src={state.tableData.urls[index]}
+                                <img className={`car ${changedModel}`} src={state.tableData.urls[index]}
                                      alt="car"/>
                             </div>
                             {/*<div className={"btn-wrapper"}>*/}

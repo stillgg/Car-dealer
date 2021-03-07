@@ -1,13 +1,18 @@
-import {GET_CARS_JSON,
-    GET_IMG_URL_SLIDER_BODY_SALON,
-    UPDATE_SLIDER_BODY_SALON
+import {
+    GET_CARS_JSON,
+    GET_IMG_URL_SLIDER_BODY_SALON, GET_IMG_WIDGETS,
+    RESET_SLIDER, RESET_SLIDER_TYPE1,
+    UPDATE_SLIDER_BODY_SALON, UPDATE_WIDGETS_SELECT
 }
     from "../types/types"
 
 import {
     CHANGE_SUBMODEL,
     CHANGE_MODEL,
-    GET_IMG_URL, CHANGE_VIEW, UPDATE_SLIDER_TYPE1, CHANGE_TABLE_DATA
+    GET_IMG_URL,
+    CHANGE_VIEW,
+    UPDATE_SLIDER_TYPE1,
+    CHANGE_TABLE_DATA
 } from "../types/tableDataTypes"
 
 import {
@@ -37,8 +42,6 @@ const initionalState = {
     aboutCar:{
         videoUrl: null,
         iconsUrls: null,
-        // optionSelect: 0,
-        // iconSelect: null,
     },
 
     slider: {
@@ -75,7 +78,9 @@ const initionalState = {
             optionSelect: 0
         },
         iconsUrls: null,
-        iconSelect: null
+        iconSelect: null,
+        widgetsUrls: null,
+        widgetsSelect: null
     },
 
     sliderType1: {
@@ -138,6 +143,16 @@ export const appReducer = (state=initionalState, action)=>{
                         ...action.payload
                     }
                 },
+            }
+
+        case RESET_SLIDER:
+            return {
+                ...state,
+                aboutCar: action.aboutCar,
+                slider: {
+                    ...state.slider,
+                    ...action.payload
+                }
             }
 
         case GET_IMG_URL_SLIDER_BODY_SALON:
@@ -240,12 +255,41 @@ export const appReducer = (state=initionalState, action)=>{
                 }
             }
 
+        case RESET_SLIDER_TYPE1:
+            return {
+                ...state,
+                sliderType1: action.payload
+            }
+
         case CHANGE_TABLE_DATA:
             return{
                 ...state,
                 tableData: {
                     ...state.tableData,
                     ...action.payload
+                }
+            }
+
+        case GET_IMG_WIDGETS:
+            return {
+                ...state,
+                slider: {
+                    ...state.slider,
+                    widgetsUrls: action.widgets,
+                    widgetsSelect: action.widgetsSelect
+                }
+            }
+
+        case UPDATE_WIDGETS_SELECT:
+            return {
+                ...state,
+                slider:{
+                    ...state.slider,
+                    widgetsSelect: {
+                        ...state.slider.widgetsSelect,
+                        [action.key]:action.payload
+                    }
+
                 }
             }
 

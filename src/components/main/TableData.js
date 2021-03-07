@@ -12,7 +12,9 @@ import {
     changeModel,
     getCarList,
     changeView,
-    updateSliderType1, changeTableData
+    updateSliderType1,
+    changeTableData,
+    resetSliderType1
 } from "../../store/actions/tableDataAction"
 
 import Preloader from "../preloaders/Preloader"
@@ -66,6 +68,7 @@ class TableData extends Component{
                                     changeTableData={this.props.changeTableData}
                                     updateSliderType1={this.props.updateSliderType1}
                                     changeSubModel={this.props.changeSubModel}
+                                    resetSliderType1={this.props.resetSliderType1}
                                 />
                                 :
                                 <Preloader/>
@@ -91,7 +94,8 @@ const mapDispatchToProps = {
     handleLoader,
     changeView,
     updateSliderType1,
-    changeTableData
+    changeTableData,
+    resetSliderType1
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(TableData)
