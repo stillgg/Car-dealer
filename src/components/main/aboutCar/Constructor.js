@@ -4,7 +4,6 @@ import Slider from "../../slider/Slider"
 class Constructor extends React.Component{
 
     render(props){
-        const state = this.props.state
         const carName = this.props.carName
 
         return(

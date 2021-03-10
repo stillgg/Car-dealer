@@ -6,7 +6,7 @@ import {BrowserRouter} from "react-router-dom"
 import '../App.scss'
 
 
-const App = (props) =>{
+const App = () =>{
     return(
         <BrowserRouter>
             <React.Fragment>

@@ -70,7 +70,6 @@ class AboutCar extends Component{
             </React.Fragment>
         )
     }
-
 }
 
 const mapStateToProps = state => state
@@ -78,7 +77,6 @@ const mapStateToProps = state => state
 const mapDispatchToProps = {
     getVideo,
     getIcons,
-    // updateAboutCar,
     changeOptionSelect,
     changeIconSelect,
     getImgSlider,

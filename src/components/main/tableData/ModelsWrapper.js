@@ -22,8 +22,6 @@ const ModelsWrapper = props =>{
                     const models = state.models
                     const subModels = Object.keys(models[changedModel])
                     const aboutCarPath = props.getModel(subModels, index)
-                    const complictation = props.getComplictation(models,changedModel,subModels[index])
-                    // const complictationKeys = Object.keys(complictation)
 
                     return (
                         <Link
@@ -41,23 +39,10 @@ const ModelsWrapper = props =>{
 
                             <div
                                 className="img-wrapper"
-                                // style={{
-                                //     background: `url(${state.tableData.urls[index]}) no-repeat`,
-                                //     backgroundSize: "cover",
-                                //     height: "25vw",
-                                //     width: "50vw"
-                                // }}
                             >
                                 <img className={`car ${changedModel}`} src={state.tableData.urls[index]}
                                      alt="car"/>
                             </div>
-                            {/*<div className={"btn-wrapper"}>*/}
-                            {/*    <Link*/}
-                            {/*        to={`/${changedModel}/${aboutCarPath}`} className={"btn"}*/}
-                            {/*    >*/}
-                            {/*        выбрать*/}
-                            {/*    </Link>*/}
-                            {/*</div>*/}
 
                             <div className="btns-wrapper">
                                 <div className="btn-spec"

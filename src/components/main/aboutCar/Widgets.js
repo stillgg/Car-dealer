@@ -11,17 +11,25 @@ class Widgets extends Component{
 
 
     render() {
+        const state = this.props.state
         const widgetsSelect = this.props.widgetsSelect
         const widgetsUrls = this.props.widgetsUrls? this.props.widgetsUrls: []
 
         const model = this.props.model
-        const conf = this.props.conf
+        // const conf = this.props.conf
         const iconSelect = this.props.iconSelect
         const type = this.props.type
         const subModel = this.props.subModel
         const widgets = this.props.widgets
+        const confBody = this.props.carInfo.configuration.body
+        const confSalon = this.props.carInfo.configuration.salon
+        // const conf = this.props.carInfo.configuration
+
 
         const widgetsArr = Object.keys(widgetsUrls)
+
+        const urlsBody = state.slider.body.imgUrls
+        const urlsSalon = state.slider.salon.imgUrls
 
         return(
             <div className="widgets">
@@ -42,12 +50,20 @@ class Widgets extends Component{
                                             item, widgetsUrls[item].length>1? +!indexImgUrl : 0
                                         )
 
+                                        await this.props.changePrevImgSlider(urlsBody,urlsSalon)
+
                                         //after click
                                         const widgetsSelect = this.props.widgetsSelect
 
                                         this.props.getImgSlider(
-                                            model, subModel,conf,
-                                            iconSelect,type,widgets,
+                                            model, subModel,confBody,
+                                            iconSelect,"body",widgets,
+                                            widgetsSelect
+                                        )
+
+                                        this.props.getImgSlider(
+                                            model, subModel,confSalon,
+                                            iconSelect,"salon",widgets,
                                             widgetsSelect
                                         )
                                     }}

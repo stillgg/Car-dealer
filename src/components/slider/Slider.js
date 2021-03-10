@@ -1,9 +1,10 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
 import {
+    changePrevImgSlider,
     getImgSlider, getWidgetsImg, resetSlider,
     updateImgSlider,
-    updateSlider, updateWidgets, updateWidgetsSelect
+    updateSlider, updateWidgetsSelect
 } from "../../store/actions/actions"
 
 import {
@@ -11,12 +12,11 @@ import {
     changeOptionSelect
 } from "../../store/actions/aboutCarAction"
 
-
-
-import PreloaderV2 from "../preloaders/PreloaderV2"
 import ConfPanel from "../main/aboutCar/ConfPanel"
 import Widgets from "../main/aboutCar/Widgets"
 
+
+// let prev
 
 class Slider extends Component {
     componentDidMount() {
@@ -42,6 +42,7 @@ class Slider extends Component {
 
         const widgets = this.props.models[model][subModel].configuration.widgets
 
+
         const widgetsSelect = this.resetSelect(
             this.props.slider.widgetsSelect
         )
@@ -49,7 +50,6 @@ class Slider extends Component {
         const iconSelect = this.resetSelect(
             this.props.slider.iconSelect
         )
-
 
         this.props.getImgSlider(model,subModel,conf,iconSelect,type,widgets,widgetsSelect)
     }
@@ -140,6 +140,16 @@ class Slider extends Component {
         return (id-pos) * 100
     }
 
+    getPlaceholder(model){
+        const obj = {
+            Maserati: "https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fplaceholders%2FMaserati.jpg?alt=media&token=447af30e-a08a-4b06-b1c1-9961a46669f0",
+            Porshe: "https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Fplaceholders%2FPorshe.jpg?alt=media&token=a7c0195a-cd55-47ca-b508-c17818f08480"
+        }
+
+        return obj[model]
+    }
+
+
     render() {
         const type = this.props.type
         const state = this.props
@@ -151,6 +161,8 @@ class Slider extends Component {
         const configuration = carInfo.configuration[type]
 
         const sliderImgs = this.props.slider[type].imgUrls
+
+        const prevSliderImgs = this.props[type].prevImgUrls
 
         const sliderLength = sliderImgs? sliderImgs.length - 1: false
         const pos = this.props.slider[type].pos
@@ -190,6 +202,8 @@ class Slider extends Component {
             return <React.Fragment></React.Fragment>
         }
 
+        // console.log("type",type)
+        // console.log("prevSliderImgs",prevSliderImgs[0])
         return (
             <React.Fragment>
                 <div className="slider"
@@ -247,7 +261,26 @@ class Slider extends Component {
                                 conf={configuration}
                                 iconSelect={iconSelect}
                                 type={type}
-                            />:
+                                changePrevImgSlider={this.props.changePrevImgSlider}
+                                state={state}
+                                carInfo={carInfo}
+                            />
+                            :
+                            false
+                    }
+
+                    {
+                        prevSliderImgs?
+                            prevSliderImgs.map((item,id)=>{
+                                return <img key={id} className={`slide ${pos === id ? "activeSlide" : `slide${id}`}`}
+                                            src={item} alt={""}
+                                            style={{
+                                                zIndex: "100",
+                                                transform: `translate(${this.calcTransformSlide(id, pos)}%)`
+                                            }}
+                                />
+                            })
+                            :
                             false
                     }
 
@@ -261,11 +294,18 @@ class Slider extends Component {
                                                 zIndex: "100",
                                                 transform: `translate(${this.calcTransformSlide(id, pos)}%)`
                                             }}
-                                >
-                                </img>
+                                />
                             })
                             :
-                            <PreloaderV2/>
+                            <img className="placeholder"
+                                 src={`${this.getPlaceholder(model)}`}
+                                 style={{
+                                     width: "100%",
+                                     height: "100%",
+                                     objectFit: "cover"
+                                 }}
+                                 alt="placeholder"
+                            />
                     }
 
                 </div>
@@ -277,6 +317,7 @@ class Slider extends Component {
                     updateSlider={this.props.updateSlider}
                     getImgSlider={this.props.getImgSlider}
                     changeOptionSelect={this.props.changeOptionSelect}
+                    changePrevImgSlider={this.props.changePrevImgSlider}
                     widgets={widgets}
                     widgetsSelect={widgetsSelect}
                 />
@@ -295,7 +336,8 @@ const mapDispatchToProps = {
     changeOptionSelect,
     resetSlider,
     getWidgetsImg,
-    updateWidgetsSelect
+    updateWidgetsSelect,
+    changePrevImgSlider
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Slider)

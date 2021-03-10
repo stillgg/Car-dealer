@@ -1,4 +1,5 @@
 import {
+    CHANGE_PREV_IMG_SLIDER,
     GET_CARS_JSON, GET_IMG_URL_SLIDER_BODY_SALON, GET_IMG_WIDGETS,
     HANDLE_LOADER, RESET_SLIDER, UPDATE_SLIDER_BODY_SALON, UPDATE_WIDGETS, UPDATE_WIDGETS_SELECT
 } from "../types/types"
@@ -14,7 +15,6 @@ export const getCarsJSON = () => {
         try {
             const response = await fetch("https://car-dealer-27bc6.firebaseio.com/cars/models.json")
             const json = await response.json()
-            console.log(json)
             dispatch(
                 {
                     type: GET_CARS_JSON,
@@ -61,8 +61,6 @@ export const getImgSlider = (model,subModel,conf,iconSelect,typeSlider,widgets,w
         )
 
         for (const item of list.items){
-        console.log("confStr",confStr)
-        console.log("location Path",item.location.path)
             if( item.location.path.includes(confStr) ){
                 const url = await item.getDownloadURL()
                 imgUrls.push(url)
@@ -115,6 +113,17 @@ export const getNextImgSlider = (model,subModel,conf) =>{
             }
         ),200)
     }
+}
+
+
+export const changePrevImgSlider = (urlsBody,urlsSalon)=>{
+    return(
+        {
+            type: CHANGE_PREV_IMG_SLIDER,
+            urlsBody,
+            urlsSalon
+        }
+    )
 }
 
 export const updateImgSlider = obj=>({
@@ -175,8 +184,6 @@ export const getWidgetsImg = (model,subModel) =>{
         )
         const list = await response.listAll()
 
-        // console.log("list",list.prefixes)
-
         const result = {}
 
         for (let i=0; i<=list.prefixes.length-1; i++){
@@ -235,6 +242,6 @@ const getStrConf = (confBody,iconSelect,widgets,widgetsSelect) =>{
             key+= confArr[id] + '_'
         }
     }
-
+    console.log("key",key)
     return key
 }

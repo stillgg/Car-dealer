@@ -835,11 +835,16 @@ a{
       height: 100%;
       position: absolute;
       transition: .5s all;
+      animation: .75s show-model;
     }
 
     .activeNextSlide{
       animation: .5s show-model linear;
     }
+
+    //.maserati-preview-slider{
+    //  animation: show-model .8s;
+    //}
   }
 
   @keyframes gra {

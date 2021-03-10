@@ -26,7 +26,6 @@ const database = app.database()
 
 export const firebaseStorage = firebase.storage()
 
-// export const storageRef = firebaseStorage.ref().child('/cars/image/cards')
 
 ReactDOM.render(
     <Provider store={store}>

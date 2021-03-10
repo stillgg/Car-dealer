@@ -1,4 +1,5 @@
 import {
+    CHANGE_PREV_IMG_SLIDER,
     GET_CARS_JSON,
     GET_IMG_URL_SLIDER_BODY_SALON, GET_IMG_WIDGETS,
     RESET_SLIDER, RESET_SLIDER_TYPE1,
@@ -47,13 +48,10 @@ const initionalState = {
     slider: {
         body: {
             iconLoader: false,
-            // prevImgUrls: null,
-            // nextImgUrls: null,
             imgUrls: null,
             prev: "disable",
             next: "active",
             pos: 0,
-            // prevPos: 0,
             X1: 0, /* начальная координата косания относительно окна браузера по оси x */
             X2: 0, /* конечная координата косания */
             touchPosSliderX1: 0, /* начальная координата косания относительно слайдера по оси x */
@@ -63,8 +61,7 @@ const initionalState = {
         },
         salon: {
             iconLoader: false,
-            // prevImgUrls: null,
-            // nextImgUrls: null,
+            prevImgs: null,
             imgUrls: null,
             prev: "disable",
             next: "active",
@@ -87,6 +84,14 @@ const initionalState = {
         pos: 0,
         touchStart: 0,
         touchMovePos: 0
+    },
+
+    body:{
+        prevImgUrls: null,
+    },
+
+    salon:{
+        prevImgUrls: null,
     }
 }
 
@@ -152,6 +157,12 @@ export const appReducer = (state=initionalState, action)=>{
                 slider: {
                     ...state.slider,
                     ...action.payload
+                },
+                body:{
+                    prevImgUrls: null,
+                },
+                salon:{
+                    prevImgUrls: null,
                 }
             }
 
@@ -291,6 +302,28 @@ export const appReducer = (state=initionalState, action)=>{
                     }
 
                 }
+            }
+        case CHANGE_PREV_IMG_SLIDER:
+            return {
+                ...state,
+                // slider:{
+                //     ...state.slider,
+                //     body:{
+                //         ...state.slider.body,
+                //         prevImgs: action.urlsBody
+                //     },
+                //     salon:{
+                //         ...state.slider.body,
+                //         prevImgs: action.urlsSalon
+                //     }
+                // }
+                body:{
+                    prevImgUrls: action.urlsBody,
+                },
+                salon:{
+                    prevImgUrls: action.urlsSalon,
+                }
+
             }
 
         default:
