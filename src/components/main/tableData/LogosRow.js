@@ -29,6 +29,7 @@ const LogosRow = (props) =>{
                                  to={item}
                         >
                             <img
+                                className="logo-car"
                                 src={`./img/${item.toLowerCase()}-logo.svg`} alt={item}
                             />
                         </NavLink>

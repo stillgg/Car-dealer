@@ -8,11 +8,13 @@ const ModelsWrapper = props =>{
     const changedModel = props.changedModel
     const slider = props.slider
     const changedViewMode = state.tableData.viewMode
+    const clientWidth = document.documentElement.clientWidth
+    const axis = clientWidth >= 768? "X":"Y"
 
     return(
         <div className="models-wrapper"
              style={{
-                 transform: `translateX(${props.calcTransform(pos + touchMovePos)}%)`,
+                 transform: `translate${axis}(${props.calcTransform(pos + touchMovePos,axis) }px)`,
                  transition: ".3s all",
                  width: "100vw"
              }}

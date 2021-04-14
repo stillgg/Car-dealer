@@ -1,7 +1,7 @@
 import {
     CHANGE_PREV_IMG_SLIDER,
     GET_CARS_JSON, GET_IMG_URL_SLIDER_BODY_SALON, GET_IMG_WIDGETS,
-    HANDLE_LOADER, RESET_SLIDER, UPDATE_SLIDER_BODY_SALON, UPDATE_WIDGETS, UPDATE_WIDGETS_SELECT
+    HANDLE_LOADER, RESET_SLIDER, UPDATE_SLIDER_BODY_SALON, UPDATE_WIDGETS_SELECT
 } from "../types/types"
 import {firebaseStorage} from "../../index"
 
@@ -242,6 +242,5 @@ const getStrConf = (confBody,iconSelect,widgets,widgetsSelect) =>{
             key+= confArr[id] + '_'
         }
     }
-    console.log("key",key)
     return key
 }

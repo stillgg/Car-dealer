@@ -306,17 +306,6 @@ export const appReducer = (state=initionalState, action)=>{
         case CHANGE_PREV_IMG_SLIDER:
             return {
                 ...state,
-                // slider:{
-                //     ...state.slider,
-                //     body:{
-                //         ...state.slider.body,
-                //         prevImgs: action.urlsBody
-                //     },
-                //     salon:{
-                //         ...state.slider.body,
-                //         prevImgs: action.urlsSalon
-                //     }
-                // }
                 body:{
                     prevImgUrls: action.urlsBody,
                 },

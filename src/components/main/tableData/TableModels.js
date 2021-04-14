@@ -13,6 +13,10 @@ class TableModels extends React.Component{
         return Math.round(clientX/width*10)/10
     }
 
+    roundHeight(clientY,height){
+        return Math.round(clientY/height*10)/10
+    }
+
     getComplictation(models,changedModel,changedSubModel){
         return models[changedModel][changedSubModel]["complictation"]
     }
@@ -43,8 +47,25 @@ class TableModels extends React.Component{
         )
     }
 
-    calcTransform(pos){
-        return (-70*pos)+15
+    roundValue(val,round){
+        return Math.round( val * round)/round
+    }
+
+    calcTransform(pos, axis) {
+        const modelInactive = document.querySelector("a.inactive")
+        const clientWidth = document.documentElement.clientWidth
+
+        const x = modelInactive? modelInactive.clientWidth: 0
+        const y = modelInactive? modelInactive.clientHeight: 0
+
+        if (axis === "X") {
+            // return (-x * pos) + (clientWidth - x)/2
+            return (-x * pos) + clientWidth * 0.15
+        }
+
+        if (axis === "Y") {
+            return (-y * pos)
+        }
     }
 
     touchStartHandler(touchStart){
@@ -108,6 +129,7 @@ class TableModels extends React.Component{
         const props = this.props
         const state = props.state
         const width = document.documentElement.clientWidth
+        const height = document.documentElement.clientHeight
 
         const pos = state.sliderType1.pos
         const touchStart = state.sliderType1.touchStart
@@ -124,21 +146,31 @@ class TableModels extends React.Component{
                  onTouchStart={
                      e => {
                          const clientX = e.touches[0].clientX
+                         const clientY = e.touches[0].clientY
+
                          this.touchStartHandler(
                              this.roundWidth(clientX, width)
                          )
-
+                         // this.touchStartHandler(
+                         //     this.roundHeight(clientY, height)
+                         // )
                      }
                  }
                  onTouchMove={e => {
                      const clientX = e.changedTouches[0].clientX
+                     const clientY = e.changedTouches[0].clientY
+
                      const touchMove = this.roundWidth(clientX, width)
+                     // const touchMove = this.roundHeight(clientY, height)
+
+
                      const res = touchStart - touchMove
                      this.getPos(res * 1.3)
                  }}
 
                  onTouchEnd={e => {
                      const touchEnd = this.roundWidth(e.changedTouches[0].clientX, width)
+                     // const touchEnd = this.roundHeight(e.changedTouches[0].clientY, height)
                      const length = modelsArr.length
                      this.touchEndHandler(touchStart, touchEnd, length, pos)
                  }}
@@ -169,6 +201,7 @@ class TableModels extends React.Component{
                     getComplictation={this.getComplictation}
                     changeTableData={this.props.changeTableData}
                     changeSubModel={this.props.changeSubModel}
+                    roundValue={this.roundValue}
                 />
 
                 <Specifications

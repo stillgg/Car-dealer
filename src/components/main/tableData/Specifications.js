@@ -84,9 +84,9 @@ const Specifications = props =>{
                                             </span>
                                         </div>
                                         <ul className="model-spec">
-                                            {conf.map((item)=>{
+                                            {conf.map((item,index)=>{
                                                 return(
-                                                    <li className="model-spec-info">
+                                                    <li className="model-spec-info" key={index}>
                                                         <span className="header-spec-info">
                                                             {`${props.getPostfixItemSpecInfo(item)
                                                                 ?

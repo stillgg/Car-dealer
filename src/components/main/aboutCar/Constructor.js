@@ -7,8 +7,12 @@ class Constructor extends React.Component{
         const carName = this.props.carName
 
         return(
-            <div className="constructor">
-                <h2 className="header">Собери свой {carName}</h2>
+            <div className="constructor" id="constructor">
+                <h2 className="header">
+                    Собери свой
+                    <br/>
+                    {carName}
+                </h2>
                 <div className="main">
                     <Slider
                         type="body"

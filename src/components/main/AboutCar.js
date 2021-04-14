@@ -1,16 +1,20 @@
 import React , {Component} from "react"
 
 import {connect} from "react-redux"
+
+
+import PreloaderV2 from "../preloaders/PreloaderV2"
+import Constructor from "./aboutCar/Constructor"
+import Nav from "../Nav"
+
 import {
     changeIconSelect,
     changeOptionSelect,
     getIcons,
     getVideo
 } from "../../store/actions/aboutCarAction"
-
-import PreloaderV2 from "../preloaders/PreloaderV2"
 import {getImgSlider, getNextImgSlider, updateImgSlider, updateSlider} from "../../store/actions/actions"
-import Constructor from "./aboutCar/Constructor"
+
 
 
 class AboutCar extends Component{
@@ -46,6 +50,7 @@ class AboutCar extends Component{
 
         return(
             <React.Fragment>
+                <Nav/>
                 <div className="preview">
                     {preview ?
                         <video muted autoPlay loop playsinline>
@@ -55,7 +60,26 @@ class AboutCar extends Component{
                         :
                         <PreloaderV2/>
                     }
+
+                    <a href="#constructor" className="arrow" style={{
+                        width: "100px",
+                        height: "100px",
+                        position: "absolute",
+                        top: "85%",
+                        left: "50%",
+                        transform: "translateX(-50%) ",
+                        cursor: "pointer",
+                        opacity: ".6",
+                        display: "flex",
+                        justifyContent: "center"
+                    }}>
+                        <img
+                            className="arrow-down"
+                            src="https://firebasestorage.googleapis.com/v0/b/car-dealer-27bc6.appspot.com/o/cars%2Fimage%2Ficons%2FarrowDown.png?alt=media&token=29d5de7c-aba6-4de0-856c-4bd02175616d"
+                            alt="arrowDown"/>
+                    </a>
                 </div>
+
 
                 <Constructor
                     state={state}

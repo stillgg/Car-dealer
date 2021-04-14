@@ -49,7 +49,7 @@ class Options extends React.Component{
                                         )
                                     }}
                                 >
-                                    {this.getStrOptionName(item)}
+                                    <span className={`option-name ${index === optionSelect ? "active" : ""}`}>{this.getStrOptionName(item)}</span>
                                 </li>
                             )
                         })

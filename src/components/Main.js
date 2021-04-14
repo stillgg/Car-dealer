@@ -9,7 +9,6 @@ const Main = (props) =>{
         <main className={"Main"}>
             <Switch>
                 <Route path={"/:item/:aboutCarPath"} component={AboutCar}/>
-                {/*<Route path={"/:item"} component={AboutCar}/>*/}
                 <Route path={"/:item"} component={TableData}/>
                 <Route path="/" component={TableData}/>
             </Switch>

@@ -66,6 +66,7 @@ $dark-blue: #0c2340;
 $grey: #b6b6b6;
 $red: #950014;
 
+
 @mixin centerX {
   display: flex;
   flex-wrap: wrap;
@@ -91,6 +92,7 @@ body,html{
   margin: 0;
   padding: 0;
   font-family: $nextCyReg;
+  scroll-behavior: smooth;
 }
 
 *{
@@ -110,14 +112,34 @@ a{
   outline: none;
 }
 
+
 .Nav{
+  .logo-car {
+    width: 100px;
+    height: 100px;
+    @media(max-width: 992px) {
+      width: 90px;
+      height: 90px;
+    }
+    @media (max-width: 768px) {
+      width: 80px;
+      height: 80px;
+    }
+    @media (max-width: 576px) {
+      width: 70px;
+      height: 70px;
+    }
+  }
 }
+
 
 .Main {
   font-size: 1.8rem;
 
   @media(max-width: 768px){
     font-size: 1.6rem;
+    max-height: 100vh;
+    overflow: hidden;
   }
 
   @media(max-width: 576px){
@@ -130,7 +152,7 @@ a{
       flex-wrap: wrap;
       justify-content: space-evenly;
       padding-bottom: .5rem;
-      //box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 10px -10px $grey;
       .car, .active-car {
         @include centerX;
         cursor: pointer;
@@ -152,7 +174,7 @@ a{
             width: 77px;
             height: 48px;
           }
-          
+
           @media (max-width: 576px) {
             width: 65px;
             height: 40px;
@@ -180,14 +202,21 @@ a{
     }
 
     .table-models-view-1{
-      box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5) inset;
+      //box-shadow: 5px 10px 10px -10px rgba(0,0,0,0.5) inset;
       overflow: hidden;
       //position: absolute;
       //top: 50%;
       //transform: translateY(-50%);
       .models-wrapper{
         display: flex;
+        align-self: center;
         transition: .5s all;
+
+        @media(max-width: 768px){
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
         .model{
           cursor: inherit;
         }
@@ -195,11 +224,7 @@ a{
         .img-wrapper{
           @include centerX;
           width: 70vw;
-          height: auto;
-          //.car{
-          //  width: 55vw;
-          //  height: 27.5vw;
-          //}
+          height: 33.75vw;
           .Maserati{
             width: 50vw;
             height: 25vw;
@@ -234,6 +259,9 @@ a{
 
           .btns-wrapper{
             opacity: 0;
+            @media (max-width: 768px){
+              display: none;
+            }
           }
 
           .btn-header{
@@ -633,6 +661,11 @@ a{
     //opacity: .5;
     height: 100vh;
 
+    .arrow-down{
+      width: 10vh;
+      height: 10vh;
+      animation: .5s infinite drop-arrow alternate;
+    }
 
     video {
       top: 0;
@@ -647,8 +680,18 @@ a{
   .constructor {
     position: absolute;
     top: 100vh;
+    min-height: 100vh;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .header{
+      text-align: center;
+      @include centerX-Y
+    }
+
     .main {
       width: 90vw;
       margin: 0 auto;
@@ -661,26 +704,33 @@ a{
 
       .option {
         cursor: pointer;
-        padding: .5em;
         user-select: none;
+        padding: .5em .7em .7em .5em;
+
+        .option-name{
+          line-height: 1em;
+        }
+
+        .active {
+          font-weight: bold;
+          background: rgba(255,255,255,.5);
+        }
 
         &:first-child {
           padding-left: 0;
         }
       }
 
-      .active {
-        font-weight: bold;
-        background: rgba(255,255,255,.5);
-      }
+
     }
 
     .icons-panel {
       display: flex;
       user-select: none;
-
+      margin-bottom: 1.5em;
       .icon {
-        margin: .5em;
+        margin-right: .7em;
+        margin-left: .3em;
         position: relative;
         cursor: pointer;
         img {
@@ -737,171 +787,179 @@ a{
   }
 }
 
-  .preloader {
-    @include centerX;
 
-    .loader {
-      border: 8px solid $dark-blue;
-      border-top-color: $white;
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      opacity: .9;
-      animation: .7s spin infinite linear;
-    }
+.preloader {
+  @include centerX;
+
+  .loader {
+    border: 8px solid $dark-blue;
+    border-top-color: $white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    opacity: .9;
+    animation: .7s spin infinite linear;
   }
+}
 
-  .preloader-V2 {
-    height: 100%;
+.preloader-V2 {
+  height: 100%;
+  width: 100%;
+  animation: .5s gra infinite alternate;
+}
+
+.slider {
+  width: 100%;
+  height: 50vw;
+  position: relative;
+  overflow: hidden;
+
+  .widgets{
+    opacity: 1;
+    transition: .5s opacity;
+    position: absolute;
     width: 100%;
-    animation: .5s gra infinite alternate;
-  }
-
-  .slider {
-    width: 100%;
-    height: 50vw;
-    position: relative;
-    overflow: hidden;
-
-    .widgets{
-      opacity: 1;
-      transition: .5s opacity;
-      position: absolute;
-      width: 100%;
-      height: 50px;
+    height: 50px;
+    z-index: 1000;
+    top: 100%;
+    transform: translateY(-100%);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .widget{
       z-index: 1000;
-      top: 100%;
-      transform: translateY(-100%);
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      .widget{
-        z-index: 1000;
-        transition: .2s opacity;
-        cursor: pointer;
-        width: 45px;
-        height: 45px;
-        //opacity: 0;
-      }
-      //transform: translateY(90%);
-    }
-
-    &:hover .widget{
-      //opacity: 1;
-      //transition: .5s opacity;
-    }
-    &:hover .prev {
-      opacity: 1;
-      transition: .5s opacity;
-    }
-
-    &:hover .next {
-      opacity: 1;
-      transition: .5s opacity;
-    }
-
-    .prev, .next {
-      font-size: 5em;
-      position: absolute;
-      top: 50%;
-      transform: translate(0, -50%);
+      transition: .2s opacity;
       cursor: pointer;
-      z-index: 1000000;
-      opacity: 0;
-      transition: .5s opacity;
-      user-select: none;
+      width: 45px;
+      height: 45px;
+      //opacity: 0;
     }
-
-    .prev {
-      left: 0;
-    }
-
-    .next {
-      right: 0;
-    }
-
-    .disable {
-      color: grey;
-    }
-
-    .active {
-      color: white;
-    }
-
-    .slide {
-      background-size: cover;
-      background-repeat: no-repeat;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      transition: .5s all;
-      animation: .75s show-model;
-    }
-
-    .activeNextSlide{
-      animation: .5s show-model linear;
-    }
-
-    //.maserati-preview-slider{
-    //  animation: show-model .8s;
-    //}
+    //transform: translateY(90%);
   }
 
-  @keyframes gra {
-    0% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 0%, $light-grey 100%);
-    }
-    10% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 10%, $light-grey 100%);
-    }
-    20% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 20%, $light-grey 100%);
-    }
-    30% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 30%, $light-grey 100%);
-    }
-    40% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 40%, $light-grey 100%);
-    }
-    50% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 50%, $light-grey 100%);
-    }
-    60% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 60%, $light-grey 100%);
-    }
-    70% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 70%, $light-grey 100%);
-    }
-    80% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 80%, $light-grey 100%);
-    }
-    90% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 90%, $light-grey 100%);
-    }
-    100% {
-      background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 100%, $light-grey 100%);
-    }
+  &:hover .widget{
+    //opacity: 1;
+    //transition: .5s opacity;
+  }
+  &:hover .prev {
+    opacity: 1;
+    transition: .5s opacity;
   }
 
-  @keyframes show-model {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  &:hover .next {
+    opacity: 1;
+    transition: .5s opacity;
   }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  .prev, .next {
+    font-size: 5em;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    z-index: 1000000;
+    opacity: 0;
+    transition: .5s opacity;
+    user-select: none;
   }
 
+  .prev {
+    left: 0;
+  }
 
+  .next {
+    right: 0;
+  }
+
+  .disable {
+    color: grey;
+  }
+
+  .active {
+    color: white;
+  }
+
+  .slide {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: .5s all;
+    animation: .75s show-model;
+  }
+
+  .activeNextSlide{
+    animation: .5s show-model linear;
+  }
+
+  //.maserati-preview-slider{
+  //  animation: show-model .8s;
+  //}
+}
+
+@keyframes gra {
+  0% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 0%, $light-grey 100%);
+  }
+  10% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 10%, $light-grey 100%);
+  }
+  20% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 20%, $light-grey 100%);
+  }
+  30% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 30%, $light-grey 100%);
+  }
+  40% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 40%, $light-grey 100%);
+  }
+  50% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 50%, $light-grey 100%);
+  }
+  60% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 60%, $light-grey 100%);
+  }
+  70% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 70%, $light-grey 100%);
+  }
+  80% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 80%, $light-grey 100%);
+  }
+  90% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 90%, $light-grey 100%);
+  }
+  100% {
+    background: linear-gradient(90deg, $light-grey 0%, rgba(255, 255, 255, 1) 100%, $light-grey 100%);
+  }
+}
+
+@keyframes show-model {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes drop-arrow {
+  from{
+    transform: translateY(0px);
+  }
+  to{
+    transform: translateY(15px);
+  }
+}
 
 
 

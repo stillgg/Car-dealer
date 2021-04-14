@@ -16,7 +16,6 @@ import ConfPanel from "../main/aboutCar/ConfPanel"
 import Widgets from "../main/aboutCar/Widgets"
 
 
-// let prev
 
 class Slider extends Component {
     componentDidMount() {
@@ -68,7 +67,7 @@ class Slider extends Component {
     }
 
     nextHandler(pos,sliderLength,type){
-        if(pos === sliderLength){
+        if(pos === sliderLength || !sliderLength){
             return
         }
         this.props.updateSlider(
@@ -187,23 +186,24 @@ class Slider extends Component {
 
         const iconSelect = this.props.slider.iconSelect
 
-        switch (pos) {
-            case sliderLength:
-                next = "disable"
-                break
-            case 0:
-                prev = "disable"
-                break
-            default:
-                break
+        if(sliderLength){
+            switch (pos) {
+                case sliderLength:
+                    next = "disable"
+                    break
+                case 0:
+                    prev = "disable"
+                    break
+                default:
+                    break
+            }
         }
 
-        if(!configuration){
+
+        if (!configuration){
             return <React.Fragment></React.Fragment>
         }
 
-        // console.log("type",type)
-        // console.log("prevSliderImgs",prevSliderImgs[0])
         return (
             <React.Fragment>
                 <div className="slider"
